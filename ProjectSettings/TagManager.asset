@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Character_One
   - Character_Two
+  - DropZone
   layers:
   - Default
   - TransparentFX
