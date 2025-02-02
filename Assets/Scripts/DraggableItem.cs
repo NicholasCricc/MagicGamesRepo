@@ -15,39 +15,48 @@ public class DraggableItem : MonoBehaviour
     private Vector3 mouseStartPosition; // Position of the mouse when the press started
     private ItemChanger itemChanger; // Reference to the parent ItemChanger script
 
+    private int originalLayer; // To store the original layer of the item
+
     void Start()
     {
-        // Save the starting position
         startPosition = transform.position;
 
         // Find the parent ItemChanger script
         itemChanger = GetComponentInParent<ItemChanger>();
+
+        // Save the original layer
+        originalLayer = gameObject.layer;
     }
 
     void OnMouseDown()
     {
-        // Record the press start time and mouse position
         pressStartTime = Time.time;
         mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        hasDragged = false; // Reset dragging state
-        isDragging = false; // Ensure dragging is reset
+        hasDragged = false;
+        isDragging = false;
     }
 
     void OnMouseDrag()
     {
-        // Calculate how far the mouse has moved
         Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         float distance = Vector3.Distance(mouseStartPosition, currentMousePosition);
 
-        // Start dragging only if both time and distance thresholds are met
         if (!hasDragged && distance > dragDistanceThreshold && Time.time - pressStartTime >= longPressThreshold)
         {
-            hasDragged = true; // Confirm that dragging has started
+            hasDragged = true;
             isDragging = true;
             Debug.Log($"{gameObject.name} is being dragged.");
+
+            // Change the layer to ignore collisions during dragging
+            gameObject.layer = LayerMask.NameToLayer("IgnoreCollisions");
+
+            // Notify the ItemChanger to show the next item
+            if (itemChanger != null)
+            {
+                itemChanger.ShowNextItem(startPosition);
+            }
         }
 
-        // Move the item with the mouse if dragging
         if (isDragging)
         {
             transform.position = new Vector3(currentMousePosition.x, currentMousePosition.y, startPosition.z);
@@ -56,29 +65,24 @@ public class DraggableItem : MonoBehaviour
 
     void OnMouseUp()
     {
-        // If the item was dragged, handle dropping logic
         if (hasDragged)
         {
             if (isOverDropZone)
             {
+                // Snap to drop zone
                 transform.position = dropZone.position;
                 Debug.Log($"{gameObject.name} dropped on {dropZone.name}");
             }
             else
             {
+                // Return to starting position
                 transform.position = startPosition;
                 Debug.Log($"{gameObject.name} dropped outside any drop zone.");
             }
         }
-        else
-        {
-            // If it wasn't dragged, treat it as a click
-            Debug.Log($"{gameObject.name} clicked.");
-            if (itemChanger != null)
-            {
-                itemChanger.ChangeToNextItem();
-            }
-        }
+
+        // Restore the original layer after dragging
+        gameObject.layer = originalLayer;
 
         // Reset states
         isDragging = false;
@@ -103,5 +107,10 @@ public class DraggableItem : MonoBehaviour
             dropZone = null;
             Debug.Log($"{gameObject.name} exited drop zone: {collision.name}");
         }
+    }
+
+    public Vector3 GetStartingPosition()
+    {
+        return startPosition;
     }
 }
