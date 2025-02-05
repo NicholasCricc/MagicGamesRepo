@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DraggableItem : MonoBehaviour
 {
@@ -8,14 +8,14 @@ public class DraggableItem : MonoBehaviour
     private Transform dropZone; // Reference to the drop zone this item is over
 
     private float pressStartTime; // Time when the mouse button was pressed
+    private float pressDuration; // How long the mouse button was held
     private bool hasDragged = false; // Whether the user has started dragging the item
-    private float longPressThreshold = 0.15f; // Time in seconds for a long press
+    private float shortPressThreshold = 0.4f; // Adjusted short press threshold
+    private float longPressThreshold = 0.5f; // Threshold for long press (dragging)
     private float dragDistanceThreshold = 0.05f; // Minimum distance to start dragging
 
     private Vector3 mouseStartPosition; // Position of the mouse when the press started
     private ItemChanger itemChanger; // Reference to the parent ItemChanger script
-
-    private int originalLayer; // To store the original layer of the item
 
     void Start()
     {
@@ -23,17 +23,14 @@ public class DraggableItem : MonoBehaviour
 
         // Find the parent ItemChanger script
         itemChanger = GetComponentInParent<ItemChanger>();
-
-        // Save the original layer
-        originalLayer = gameObject.layer;
     }
 
     void OnMouseDown()
     {
-        pressStartTime = Time.time;
-        mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        hasDragged = false;
-        isDragging = false;
+        pressStartTime = Time.time; // Record the time when the mouse button was pressed
+        mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Record mouse position
+        hasDragged = false; // Reset dragging state
+        isDragging = false; // Ensure dragging is reset
     }
 
     void OnMouseDrag()
@@ -41,22 +38,15 @@ public class DraggableItem : MonoBehaviour
         Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         float distance = Vector3.Distance(mouseStartPosition, currentMousePosition);
 
+        // Start dragging only if both distance and time thresholds are met
         if (!hasDragged && distance > dragDistanceThreshold && Time.time - pressStartTime >= longPressThreshold)
         {
-            hasDragged = true;
+            hasDragged = true; // Dragging has started
             isDragging = true;
             Debug.Log($"{gameObject.name} is being dragged.");
-
-            // Change the layer to ignore collisions during dragging
-            gameObject.layer = LayerMask.NameToLayer("IgnoreCollisions");
-
-            // Notify the ItemChanger to show the next item
-            if (itemChanger != null)
-            {
-                itemChanger.ShowNextItem(startPosition);
-            }
         }
 
+        // Move the item with the mouse if dragging
         if (isDragging)
         {
             transform.position = new Vector3(currentMousePosition.x, currentMousePosition.y, startPosition.z);
@@ -65,24 +55,32 @@ public class DraggableItem : MonoBehaviour
 
     void OnMouseUp()
     {
+        // Calculate how long the mouse button was held
+        pressDuration = Time.time - pressStartTime;
+
         if (hasDragged)
         {
+            // Handle dropping logic (already working)
             if (isOverDropZone)
             {
-                // Snap to drop zone
                 transform.position = dropZone.position;
                 Debug.Log($"{gameObject.name} dropped on {dropZone.name}");
             }
             else
             {
-                // Return to starting position
                 transform.position = startPosition;
                 Debug.Log($"{gameObject.name} dropped outside any drop zone.");
             }
         }
-
-        // Restore the original layer after dragging
-        gameObject.layer = originalLayer;
+        else if (pressDuration < shortPressThreshold)
+        {
+            // Short press logic
+            Debug.Log($"{gameObject.name} short-pressed.");
+            if (itemChanger != null)
+            {
+                itemChanger.ChangeToNextItem();
+            }
+        }
 
         // Reset states
         isDragging = false;
@@ -113,4 +111,5 @@ public class DraggableItem : MonoBehaviour
     {
         return startPosition;
     }
+
 }
