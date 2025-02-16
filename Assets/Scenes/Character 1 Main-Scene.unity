@@ -130,6 +130,8 @@ GameObject:
   - component: {fileID: 103635120}
   - component: {fileID: 103635119}
   - component: {fileID: 103635118}
+  - component: {fileID: 103635122}
+  - component: {fileID: 103635121}
   m_Layer: 0
   m_Name: DropZone_Legs
   m_TagString: DropZone
@@ -253,6 +255,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &103635121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103635117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b73e04c8ca0259448bb39fbe1dfe7bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOccupied: 0
+--- !u!114 &103635122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103635117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5d26d01c1de0e44ba0e32ef19754488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519842989
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,6 +291,7 @@ GameObject:
   - component: {fileID: 519842992}
   - component: {fileID: 519842991}
   - component: {fileID: 519842990}
+  - component: {fileID: 519842993}
   m_Layer: 0
   m_Name: DropZone_Body
   m_TagString: DropZone
@@ -387,6 +415,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519842993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519842989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b73e04c8ca0259448bb39fbe1dfe7bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOccupied: 0
 --- !u!1 &1184405857
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,6 +439,7 @@ GameObject:
   - component: {fileID: 1184405860}
   - component: {fileID: 1184405859}
   - component: {fileID: 1184405858}
+  - component: {fileID: 1184405861}
   m_Layer: 0
   m_Name: DropZone_Head
   m_TagString: DropZone
@@ -521,6 +563,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1184405861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184405857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b73e04c8ca0259448bb39fbe1dfe7bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOccupied: 0
 --- !u!1001 &1319205429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -794,9 +849,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2727881720279692835, guid: fec7b5f54a8c1524797f290514532270, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     - target: {fileID: 3058217928935418835, guid: fec7b5f54a8c1524797f290514532270, type: 3}
       propertyPath: m_Name
       value: Items
+      objectReference: {fileID: 0}
+    - target: {fileID: 6733438357007116298, guid: fec7b5f54a8c1524797f290514532270, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 7150481011647989303, guid: fec7b5f54a8c1524797f290514532270, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.584
+      objectReference: {fileID: 0}
+    - target: {fileID: 7150481011647989303, guid: fec7b5f54a8c1524797f290514532270, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3997
+      objectReference: {fileID: 0}
+    - target: {fileID: 7150481011647989303, guid: fec7b5f54a8c1524797f290514532270, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7150481011647989303, guid: fec7b5f54a8c1524797f290514532270, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463165513411253891, guid: fec7b5f54a8c1524797f290514532270, type: 3}
+      propertyPath: m_TagString
+      value: Item
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9074817350570077314, guid: fec7b5f54a8c1524797f290514532270, type: 3}
