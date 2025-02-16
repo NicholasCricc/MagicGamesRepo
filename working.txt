@@ -1,0 +1,309 @@
+    using UnityEngine;
+
+    public class DraggableItem : MonoBehaviour
+    {
+        private Vector3 startPosition; // The original position of the item
+        private bool isDragging = false; // Whether the item is being dragged
+        private bool isOverDropZone = false; // Whether the item is over a drop zone
+        private Transform dropZone; // Reference to the drop zone this item is over
+
+        private float pressStartTime; // Time when the mouse button was pressed
+        private float pressDuration; // How long the mouse button was held
+        private bool hasDragged = false; // Whether the user has started dragging the item
+        private float shortPressThreshold = 0.4f; // Adjusted short press threshold
+        private float longPressThreshold = 0.3f; // Threshold for long press (dragging)
+        private float dragDistanceThreshold = 0.02f; // Minimum distance to start dragging
+
+        private Vector3 mouseStartPosition; // Position of the mouse when the press started
+        private ItemChanger itemChanger; // Reference to the parent ItemChanger script
+
+        void Start()
+        {
+            startPosition = transform.position;
+
+            // Find the parent ItemChanger script
+            itemChanger = GetComponentInParent<ItemChanger>();
+        }
+
+        void OnMouseDown()
+        {
+            pressStartTime = Time.time; // Record the time when the mouse button was pressed
+            mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Record mouse position
+            hasDragged = false; // Reset dragging state
+            isDragging = false; // Ensure dragging is reset
+        }
+
+        void OnMouseDrag()
+        {
+            Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            float distance = Vector3.Distance(mouseStartPosition, currentMousePosition);
+
+            // Start dragging only if both distance and time thresholds are met
+            if (!hasDragged && (distance > dragDistanceThreshold || Time.time - pressStartTime >= longPressThreshold))
+            {
+                hasDragged = true; // Dragging has started
+                isDragging = true;
+                Debug.Log($"{gameObject.name} is being dragged.");
+            }
+
+            // Move the item with the mouse if dragging
+            if (isDragging)
+            {
+                transform.position = new Vector3(currentMousePosition.x, currentMousePosition.y, startPosition.z);
+            }
+        }
+
+void OnMouseUp()
+{
+    pressDuration = Time.time - pressStartTime;
+
+    if (hasDragged)
+    {
+        if (isOverDropZone && dropZone != null)
+        {
+            // 🔹 Double-check if still inside a drop zone at release
+            Collider2D[] hitColliders = Physics2D.OverlapPointAll(transform.position);
+            bool isStillInsideDropZone = false;
+
+            foreach (var collider in hitColliders)
+            {
+                if (collider.CompareTag("DropZone"))
+                {
+                    isStillInsideDropZone = true;
+                    break;
+                }
+            }
+
+            if (isStillInsideDropZone) // ✅ Item is still inside drop zone at release
+            {
+                transform.position = dropZone.position; // ✅ Snap to the drop zone
+
+                // 🔹 Disable dragging so the item stays in place
+                this.enabled = false;
+                GetComponent<Collider2D>().enabled = false;
+
+                Debug.Log($"✅ {gameObject.name} snapped to {dropZone.name}");
+
+                // 🔹 Show the next available item
+                if (itemChanger != null)
+                {
+                    itemChanger.ShowNextAvailableItem();
+                }
+            }
+            else
+            {
+                // ✅ If not inside a valid drop zone, return to start position
+                transform.position = startPosition;
+                isOverDropZone = false; // ✅ Ensure the item is NOT marked as being in a drop zone
+                dropZone = null; // ✅ Reset drop zone reference
+                Debug.Log($"❌ {gameObject.name} dropped outside any drop zone.");
+            }
+        }
+        else
+        {
+            // ✅ Ensure the item resets if not inside a drop zone
+            transform.position = startPosition;
+            isOverDropZone = false; // ✅ Ensure clicking still works
+            dropZone = null; // ✅ Reset drop zone reference
+            Debug.Log($"❌ {gameObject.name} dropped outside any drop zone.");
+        }
+    }
+    else if (pressDuration < shortPressThreshold)
+    {
+        // ✅ Clicking should change the item ONLY if the item is NOT in a drop zone
+        if (!isOverDropZone && itemChanger != null)
+        {
+            Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
+            itemChanger.ChangeToNextItem();
+        }
+    }
+
+    isDragging = false;
+    hasDragged = false;
+}
+
+
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("DropZone"))
+            {
+                isOverDropZone = true;
+                dropZone = collision.transform;
+                Debug.Log($"{gameObject.name} entered drop zone: {collision.name}");
+            }
+        }
+
+void OnTriggerExit2D(Collider2D collision)
+{
+    if (collision.CompareTag("DropZone"))
+    {
+        // ✅ Prevent clearing dropZone if the item is still being dragged
+        if (isDragging)
+        {
+            Debug.Log($"⚠️ {gameObject.name} exited {collision.name}, but still dragging.");
+            return;
+        }
+
+        isOverDropZone = false;
+        dropZone = null;
+        Debug.Log($"❌ {gameObject.name} exited drop zone: {collision.name}");
+    }
+}
+
+
+        public Vector3 GetStartingPosition()
+        {
+            return startPosition;
+        }
+    }
+
+
+using UnityEngine;
+using System.Collections.Generic;
+
+public class ItemChanger : MonoBehaviour
+{
+    [Header("List of Items")]
+    public List<GameObject> itemList;
+
+    private int currentIndex = -1;
+
+    void Start()
+    {
+        if (itemList == null || itemList.Count == 0)
+        {
+            Debug.LogError("ItemChanger: itemList is empty! Add items in the Inspector.");
+            return;
+        }
+
+        // Deactivate all items at the start
+        foreach (GameObject item in itemList)
+        {
+            item.SetActive(false);
+        }
+
+        ChangeToNextItem();
+    }
+
+public void ChangeToNextItem()
+{
+    int attempts = itemList.Count;
+    GameObject previousItem = (currentIndex >= 0 && currentIndex < itemList.Count) ? itemList[currentIndex] : null;
+
+    do
+    {
+        currentIndex = (currentIndex + 1) % itemList.Count;
+    } while (IsItemInDropZone(itemList[currentIndex]) && --attempts > 0);
+
+    if (previousItem != null && !IsItemInDropZone(previousItem))
+    {
+        previousItem.SetActive(false);
+    }
+
+    GameObject nextItem = itemList[currentIndex];
+    nextItem.SetActive(true);
+
+    // 🔹 Ensure the next item appears at the correct start position
+    DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
+    if (draggable != null)
+    {
+        nextItem.transform.position = draggable.GetStartingPosition();
+    }
+    else
+    {
+        Debug.LogError($"DraggableItem component missing on {nextItem.name}");
+    }
+
+    Debug.Log($"🔁 {nextItem.name} is now active at {nextItem.transform.position}");
+}
+
+
+    public void ShowNextItem(Vector3 spawnPosition)
+    {
+        int attempts = itemList.Count;
+        GameObject previousItem = (currentIndex >= 0 && currentIndex < itemList.Count) ? itemList[currentIndex] : null;
+
+        do
+        {
+            currentIndex = (currentIndex + 1) % itemList.Count;
+        } while (IsItemInDropZone(itemList[currentIndex]) && --attempts > 0);
+
+        // **Deactivate previous item before activating next**
+        if (previousItem != null)
+        {
+            previousItem.SetActive(false);
+        }
+
+        // Activate the next item
+        GameObject nextItem = itemList[currentIndex];
+        nextItem.SetActive(true);
+
+        // Ensure the next item appears at the correct start position
+        DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
+        if (draggable != null)
+        {
+            nextItem.transform.position = draggable.GetStartingPosition();
+        }
+        else
+        {
+            Debug.LogError($"DraggableItem component missing on {nextItem.name}");
+        }
+
+        Debug.Log($"{nextItem.name} is now active at {nextItem.transform.position}");
+    }
+
+    public void ShowNextAvailableItem()
+{
+    int attempts = itemList.Count;
+    GameObject previousItem = (currentIndex >= 0 && currentIndex < itemList.Count) ? itemList[currentIndex] : null;
+
+    do
+    {
+        currentIndex = (currentIndex + 1) % itemList.Count;
+    } while (IsItemInDropZone(itemList[currentIndex]) && --attempts > 0);
+
+    // ✅ Do NOT deactivate the previous item if it's in a drop zone
+    if (previousItem != null && !IsItemInDropZone(previousItem))
+    {
+        previousItem.SetActive(false);
+    }
+
+    // ✅ Activate the next available item
+    GameObject nextItem = itemList[currentIndex];
+    nextItem.SetActive(true);
+
+    // ✅ Ensure the next item appears at the correct start position
+    DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
+    if (draggable != null)
+    {
+        nextItem.transform.position = draggable.GetStartingPosition();
+    }
+    else
+    {
+        Debug.LogError($"DraggableItem component missing on {nextItem.name}");
+    }
+
+    Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
+}
+
+
+    private bool IsItemInDropZone(GameObject item)
+    {
+        Collider2D collider = item.GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(item.transform.position, 0.1f);
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("DropZone"))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+
+I want to create multiple parent holders and items and these items can be only placed in certain dropzones. Like for a dress up game if it is a hat it can be placed in the dropzone hat and if shirts should be placed in the body dropzone
