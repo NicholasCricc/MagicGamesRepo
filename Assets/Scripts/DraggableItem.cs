@@ -1,180 +1,140 @@
-﻿    using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
-    public class DraggableItem : MonoBehaviour
+public class DraggableItem : MonoBehaviour
+{
+    private Vector3 startPosition;
+    private bool isDragging = false;
+    private bool isOverDropZone = false;
+    private Transform dropZone;
+
+    private float pressStartTime;
+    private float pressDuration;
+    private bool hasDragged = false;
+    private float shortPressThreshold = 0.4f;
+    private float longPressThreshold = 0.3f;
+    private float dragDistanceThreshold = 0.02f;
+
+    private Vector3 mouseStartPosition;
+    private ItemChanger itemChanger;
+
+    void Start()
     {
-        private Vector3 startPosition; // The original position of the item
-        private bool isDragging = false; // Whether the item is being dragged
-        private bool isOverDropZone = false; // Whether the item is over a drop zone
-        private Transform dropZone; // Reference to the drop zone this item is over
+        startPosition = transform.position;
+        itemChanger = GetComponentInParent<ItemChanger>();
+    }
 
-        private float pressStartTime; // Time when the mouse button was pressed
-        private float pressDuration; // How long the mouse button was held
-        private bool hasDragged = false; // Whether the user has started dragging the item
-        private float shortPressThreshold = 0.4f; // Adjusted short press threshold
-        private float longPressThreshold = 0.3f; // Threshold for long press (dragging)
-        private float dragDistanceThreshold = 0.02f; // Minimum distance to start dragging
-
-        private Vector3 mouseStartPosition; // Position of the mouse when the press started
-        private ItemChanger itemChanger; // Reference to the parent ItemChanger script
-
-        void Start()
-        {
-            startPosition = transform.position;
-
-            // Find the parent ItemChanger script
-            itemChanger = GetComponentInParent<ItemChanger>();
-        }
-
-        void OnMouseDown()
-        {
-            pressStartTime = Time.time; // Record the time when the mouse button was pressed
-            mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Record mouse position
-            hasDragged = false; // Reset dragging state
-            isDragging = false; // Ensure dragging is reset
-        }
-
-        void OnMouseDrag()
-        {
-            Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            float distance = Vector3.Distance(mouseStartPosition, currentMousePosition);
-
-            // Start dragging only if both distance and time thresholds are met
-            if (!hasDragged && (distance > dragDistanceThreshold || Time.time - pressStartTime >= longPressThreshold))
-            {
-                hasDragged = true; // Dragging has started
-                isDragging = true;
-                Debug.Log($"{gameObject.name} is being dragged.");
-            }
-
-            // Move the item with the mouse if dragging
-            if (isDragging)
-            {
-                transform.position = new Vector3(currentMousePosition.x, currentMousePosition.y, startPosition.z);
-            }
-        }
-
-    void OnMouseUp()
+    void OnMouseDown()
     {
-        pressDuration = Time.time - pressStartTime;
+        pressStartTime = Time.time;
+        mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        hasDragged = false;
+        isDragging = false;
+    }
 
+    void OnMouseDrag()
+    {
+        Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        float distance = Vector3.Distance(mouseStartPosition, currentMousePosition);
 
-        if (hasDragged)
+        if (!hasDragged && (distance > dragDistanceThreshold || Time.time - pressStartTime >= longPressThreshold))
         {
-            if (dropZone == null)
+            hasDragged = true;
+            isDragging = true;
+            Debug.Log($"{gameObject.name} is being dragged.");
+        }
+
+        if (isDragging)
+        {
+            transform.position = new Vector3(currentMousePosition.x, currentMousePosition.y, startPosition.z);
+        }
+    }
+
+void OnMouseUp()
+{
+    pressDuration = Time.time - pressStartTime;
+
+    if (hasDragged)
+    {
+        if (isOverDropZone && dropZone != null)
+        {
+            DropZone dropZoneScript = dropZone.GetComponent<DropZone>();
+
+            if (dropZoneScript == null)
             {
-                Debug.LogError($"❌ dropZone is null in {gameObject.name}, cannot complete placement.");
+                Debug.LogError($"❌ DropZone script missing on {dropZone.name}");
                 transform.position = startPosition;
                 return;
             }
 
+            // ✅ Call `PlaceItem()` to handle swapping
+            dropZoneScript.PlaceItem(this.gameObject);
+            transform.position = dropZone.position;
+            Debug.Log($"✅ {gameObject.name} placed in {dropZone.name} (Drop Zone is now FULL)");
 
-            if (isOverDropZone && dropZone != null)
+            StartCoroutine(DisableColliderAfterDelay());
+
+            if (itemChanger != null)
             {
-                DropZone dropZoneScript = dropZone.GetComponent<DropZone>();
-
-
-                // ✅ Ensure drop zone is valid before accessing properties
-                if (dropZoneScript == null)
-                {
-                    Debug.LogError($"❌ DropZone script missing on {dropZone.name}");
-                    transform.position = startPosition;
-                    return;
-                }
-
-                // ✅ If the drop zone is full, reject placement
-                if (dropZoneScript.isOccupied)
-                {
-                    Debug.Log($"⚠️ {gameObject.name} could not be placed in {dropZone.name} - It's already full!");
-                    transform.position = startPosition;
-                    return;
-                }
-
-                // ✅ Snap item to the drop zone
-                transform.position = dropZone.position;
-
-                // ✅ Mark the drop zone as occupied **AFTER** confirming placement
-                dropZoneScript.isOccupied = true;
-                Debug.Log($"✅ {gameObject.name} placed in {dropZone.name} (Drop Zone is now FULL)");
-
-                // 🔹 Disable dragging so the item stays in place
-                this.enabled = false;
-                GetComponent<Collider2D>().enabled = false;
-
-                // 🔹 Show the next available item
-                if (itemChanger != null)
-                {
-                    itemChanger.ShowNextAvailableItem();
-                    dropZoneScript.isOccupied = true;
-                }
-                else
-                {
-                    Debug.LogError("❌ itemChanger is null in DraggableItem.");
-                }
-            }
-            else
-            {
-                transform.position = startPosition;
-                isOverDropZone = false;
-                dropZone = null;
-                Debug.Log($"❌ {gameObject.name} dropped outside any drop zone.");
+                itemChanger.ShowNextAvailableItem();
             }
         }
-        else if (pressDuration < shortPressThreshold)
+        else
         {
-            if (!isOverDropZone && itemChanger != null)
-            {
-                Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
-                itemChanger.ChangeToNextItem();
-            }
+            Debug.Log($"❌ {gameObject.name} dropped outside any valid drop zone, returning to start.");
+            transform.position = startPosition;
         }
-
-        isDragging = false;
-        hasDragged = false;
     }
-
-
-    void OnTriggerEnter2D(Collider2D collision)
-{
-    if (collision.CompareTag("DropZone"))
+    else if (pressDuration < shortPressThreshold)
     {
-        if (collision.tag == "DropZoneFull") // ✅ Prevent entering a full drop zone
+        if (!isOverDropZone && itemChanger != null)
         {
-            Debug.Log($"⚠️ {gameObject.name} tried to enter {collision.name}, but it's FULL!");
-            return;
+            Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
+            itemChanger.ChangeToNextItem();
         }
-
-        isOverDropZone = true;
-        dropZone = collision.transform;
-
-        Debug.Log($"✅ {gameObject.name} entered {dropZone.name}");
     }
+
+    isDragging = false;
+    hasDragged = false;
 }
 
 
 
-
-
-
-void OnTriggerExit2D(Collider2D collision)
+// ✅ New function to delay setting `isOccupied`
+private IEnumerator SetOccupiedAfterDelay(DropZone dropZoneScript)
 {
-    if (collision.CompareTag("DropZoneFull")) 
+    yield return new WaitForSeconds(0.2f); // ✅ Allows Unity time to process placement
+    dropZoneScript.isOccupied = true;
+}
+
+
+
+    private IEnumerator DisableColliderAfterDelay()
     {
-        // ✅ Reset drop zone back to normal when the item is removed
-        collision.tag = "DropZone";
-        Debug.Log($"♻️ {collision.name} is now open for new items.");
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<Collider2D>().enabled = false;
+        this.enabled = false;
     }
 
-    if (collision.CompareTag("DropZone"))
+    void OnTriggerEnter2D(Collider2D collision)
+{
+    if (collision.CompareTag("DropZone_Head") && gameObject.CompareTag("HatItem"))
     {
-        isOverDropZone = false;
-        dropZone = null;
-        Debug.Log($"❌ {gameObject.name} exited drop zone: {collision.name}");
+        isOverDropZone = true;
+        dropZone = collision.transform;
+        Debug.Log($"✅ {gameObject.name} entered {dropZone.name} (Valid Placement).");
+
+        DropZone dropZoneScript = dropZone.GetComponent<DropZone>();
+        if (dropZoneScript != null && !dropZoneScript.isOccupied)
+        {
+           // dropZoneScript.isOccupied = true; // ✅ Ensure the drop zone is marked as occupied immediately
+        }
     }
 }
 
 
         public Vector3 GetStartingPosition()
-        {
-            return startPosition;
-        }
+    {
+        return startPosition;
     }
+}

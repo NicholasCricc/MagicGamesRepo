@@ -9,6 +9,14 @@ TagManager:
   - DropZone
   - Item
   - DropZoneFull
+  - HatItem
+  - ShirtItem
+  - PantsItem
+  - ShoesItem
+  - DropZone_Head
+  - DropZone_Body
+  - DropZone_Legs
+  - DropZone_Feet
   layers:
   - Default
   - TransparentFX
