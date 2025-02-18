@@ -53,71 +53,87 @@
             }
         }
 
-void OnMouseUp()
-{
-    pressDuration = Time.time - pressStartTime;
-
-    if (hasDragged)
+    void OnMouseUp()
     {
-        if (isOverDropZone && dropZone != null)
-        {
-            DropZone dropZoneScript = dropZone.GetComponent<DropZone>();
+        pressDuration = Time.time - pressStartTime;
 
-            // ✅ If the drop zone is full, reject placement
-            if (dropZoneScript != null && dropZoneScript.isOccupied)
+
+        if (hasDragged)
+        {
+            if (dropZone == null)
             {
-                Debug.Log($"⚠️ {gameObject.name} could not be placed in {dropZone.name} - It's already full!");
+                Debug.LogError($"❌ dropZone is null in {gameObject.name}, cannot complete placement.");
                 transform.position = startPosition;
                 return;
             }
 
-            // ✅ Snap item to the drop zone
-            transform.position = dropZone.position;
 
-            // ✅ Mark the drop zone as occupied
-            if (dropZoneScript != null)
+            if (isOverDropZone && dropZone != null)
             {
+                DropZone dropZoneScript = dropZone.GetComponent<DropZone>();
+
+
+                // ✅ Ensure drop zone is valid before accessing properties
+                if (dropZoneScript == null)
+                {
+                    Debug.LogError($"❌ DropZone script missing on {dropZone.name}");
+                    transform.position = startPosition;
+                    return;
+                }
+
+                // ✅ If the drop zone is full, reject placement
+                if (dropZoneScript.isOccupied)
+                {
+                    Debug.Log($"⚠️ {gameObject.name} could not be placed in {dropZone.name} - It's already full!");
+                    transform.position = startPosition;
+                    return;
+                }
+
+                // ✅ Snap item to the drop zone
+                transform.position = dropZone.position;
+
+                // ✅ Mark the drop zone as occupied **AFTER** confirming placement
                 dropZoneScript.isOccupied = true;
+                Debug.Log($"✅ {gameObject.name} placed in {dropZone.name} (Drop Zone is now FULL)");
+
+                // 🔹 Disable dragging so the item stays in place
+                this.enabled = false;
+                GetComponent<Collider2D>().enabled = false;
+
+                // 🔹 Show the next available item
+                if (itemChanger != null)
+                {
+                    itemChanger.ShowNextAvailableItem();
+                    dropZoneScript.isOccupied = true;
+                }
+                else
+                {
+                    Debug.LogError("❌ itemChanger is null in DraggableItem.");
+                }
             }
-
-            // 🔹 Disable dragging so the item stays in place
-            this.enabled = false;
-            GetComponent<Collider2D>().enabled = false;
-
-            Debug.Log($"✅ {gameObject.name} placed in {dropZone.name} (Drop Zone is now FULL)");
-
-            // 🔹 Show the next available item
-            if (itemChanger != null)
+            else
             {
-                itemChanger.ShowNextAvailableItem();
+                transform.position = startPosition;
+                isOverDropZone = false;
+                dropZone = null;
+                Debug.Log($"❌ {gameObject.name} dropped outside any drop zone.");
             }
         }
-        else
+        else if (pressDuration < shortPressThreshold)
         {
-            transform.position = startPosition;
-            isOverDropZone = false;
-            dropZone = null;
-            Debug.Log($"❌ {gameObject.name} dropped outside any drop zone.");
+            if (!isOverDropZone && itemChanger != null)
+            {
+                Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
+                itemChanger.ChangeToNextItem();
+            }
         }
-    }
-    else if (pressDuration < shortPressThreshold)
-    {
-        if (!isOverDropZone && itemChanger != null)
-        {
-            Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
-            itemChanger.ChangeToNextItem();
-        }
+
+        isDragging = false;
+        hasDragged = false;
     }
 
-    isDragging = false;
-    hasDragged = false;
-}
 
-
-
-
-
-void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
 {
     if (collision.CompareTag("DropZone"))
     {

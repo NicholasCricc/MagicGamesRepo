@@ -93,38 +93,54 @@ public void ChangeToNextItem()
     }
 
     public void ShowNextAvailableItem()
-{
-    int attempts = itemList.Count;
-    GameObject previousItem = (currentIndex >= 0 && currentIndex < itemList.Count) ? itemList[currentIndex] : null;
-
-    do
     {
-        currentIndex = (currentIndex + 1) % itemList.Count;
-    } while (IsItemInDropZone(itemList[currentIndex]) && --attempts > 0);
+        if (itemList == null || itemList.Count == 0)
+        {
+            Debug.LogError("❌ itemList is empty in ShowNextAvailableItem()");
+            return;
+        }
 
-    // ✅ Do NOT deactivate the previous item if it's in a drop zone
-    if (previousItem != null && !IsItemInDropZone(previousItem))
-    {
-        previousItem.SetActive(false);
+        int attempts = itemList.Count;
+        GameObject previousItem = (currentIndex >= 0 && currentIndex < itemList.Count) ? itemList[currentIndex] : null;
+
+        do
+        {
+            currentIndex = (currentIndex + 1) % itemList.Count;
+        } while (IsItemInDropZone(itemList[currentIndex]) && --attempts > 0);
+
+        // ✅ Ensure currentIndex is within range
+        if (currentIndex < 0 || currentIndex >= itemList.Count)
+        {
+            Debug.LogError("❌ currentIndex is out of range in ShowNextAvailableItem()");
+            return;
+        }
+
+        // ✅ Deactivate the previous item if not in a drop zone
+        if (previousItem != null && !IsItemInDropZone(previousItem))
+        {
+            previousItem.SetActive(false);
+        }
+
+        // ✅ Activate and reset position of the next item
+        GameObject nextItem = itemList[currentIndex];
+        nextItem.SetActive(true);
+
+        // ✅ Ensure the next item appears at the correct start position
+        DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
+        if (draggable != null)
+        {
+            nextItem.transform.position = draggable.GetStartingPosition();
+        }
+        else
+        {
+            Debug.LogError($"❌ DraggableItem component missing on {nextItem.name}");
+        }
+
+        Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
     }
 
-    // ✅ Activate the next available item
-    GameObject nextItem = itemList[currentIndex];
-    nextItem.SetActive(true);
 
-    // ✅ Ensure the next item appears at the correct start position
-    DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
-    if (draggable != null)
-    {
-        nextItem.transform.position = draggable.GetStartingPosition();
-    }
-    else
-    {
-        Debug.LogError($"DraggableItem component missing on {nextItem.name}");
-    }
 
-    Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
-}
 
 
     private bool IsItemInDropZone(GameObject item)
