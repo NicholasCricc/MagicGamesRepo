@@ -25,34 +25,88 @@ public class ItemChanger : MonoBehaviour
 
     public void ChangeToNextItem()
     {
-        int attempts = itemList.Count;
+        if (itemList == null || itemList.Count == 0)
+        {
+            Debug.LogError("❌ itemList is empty in ChangeToNextItem()");
+            return;
+        }
+
         GameObject previousItem = (currentIndex >= 0 && currentIndex < itemList.Count) ? itemList[currentIndex] : null;
+
+        int attempts = itemList.Count;
+        int startIndex = currentIndex;
 
         do
         {
             currentIndex = (currentIndex + 1) % itemList.Count;
-        } while (IsItemInDropZone(itemList[currentIndex]) && --attempts > 0);
+            attempts--;
 
+            // ✅ Prevent infinite loop
+            if (currentIndex == startIndex)
+            {
+                Debug.LogWarning("⚠️ No available items to cycle through. Stopping.");
+                return;
+            }
+
+        } while (IsItemInDropZone(itemList[currentIndex]) && attempts > 0);
+
+        if (attempts <= 0)
+        {
+            Debug.LogWarning("⚠️ No available items to cycle through.");
+            return;
+        }
+
+        // ✅ Hide previous item before cycling
         if (previousItem != null && !IsItemInDropZone(previousItem))
         {
             previousItem.SetActive(false);
+            previousItem.GetComponent<Collider2D>().enabled = false;
+            previousItem.GetComponent<DraggableItem>().enabled = false;
+            Debug.Log($"🔻 Hiding {previousItem.name} and DISABLING it.");
         }
 
         GameObject nextItem = itemList[currentIndex];
-        nextItem.SetActive(true);
+
+        // ✅ Ensure only the next item is active
+        EnableItemInteraction(nextItem);
 
         DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
         if (draggable != null)
         {
             nextItem.transform.position = draggable.GetStartingPosition();
         }
-        else
+
+        Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
+    }
+
+
+
+    public void EnableItemInteraction(GameObject item)
+    {
+        if (item == null) return;
+
+        item.SetActive(true);
+        Collider2D collider = item.GetComponent<Collider2D>();
+        if (collider != null)
         {
-            Debug.LogError($"DraggableItem component missing on {nextItem.name}");
+            collider.enabled = false; // ✅ Temporarily disable collider
+            collider.enabled = true;  // ✅ Reactivate collider to force Unity to detect clicks
+
+            Debug.Log($"✅ Collider refreshed and enabled for {item.name}");
         }
 
-        Debug.Log($"🔁 {nextItem.name} is now active at {nextItem.transform.position}");
+        DraggableItem draggable = item.GetComponent<DraggableItem>();
+        if (draggable != null)
+        {
+            draggable.enabled = false;
+            draggable.enabled = true; // ✅ Reactivate the script
+
+            Debug.Log($"✅ DraggableItem script refreshed for {item.name}");
+        }
     }
+
+
+
 
     private bool IsItemInDropZone(GameObject item)
     {
@@ -72,60 +126,76 @@ public class ItemChanger : MonoBehaviour
         return false;
     }
 
+    public void RegisterItem(GameObject item)
+    {
+        if (!itemList.Contains(item))
+        {
+            itemList.Add(item);
+
+            // ✅ Ensure it is interactive again
+            DropZone dropZone = FindObjectOfType<DropZone>();
+            if (dropZone != null)
+            {
+                dropZone.EnableItemInteraction(item);
+            }
+
+            Debug.Log($"🔄 {item.name} re-added and reactivated.");
+        }
+    }
+
     public void ShowNextAvailableItem()
-{
-    if (itemList == null || itemList.Count == 0)
     {
-        Debug.LogError("❌ itemList is empty in ShowNextAvailableItem()");
-        return;
+        if (itemList == null || itemList.Count == 0)
+        {
+            Debug.LogError("❌ itemList is empty in ShowNextAvailableItem()");
+            return;
+        }
+
+        int attempts = itemList.Count;
+        GameObject previousItem = (currentIndex >= 0 && currentIndex < itemList.Count) ? itemList[currentIndex] : null;
+
+        int startIndex = currentIndex;
+
+        do
+        {
+            currentIndex = (currentIndex + 1) % itemList.Count;
+            attempts--;
+
+            // ✅ Prevent infinite loop
+            if (currentIndex == startIndex)
+            {
+                Debug.LogWarning("⚠️ No available items to cycle through. Stopping.");
+                return;
+            }
+
+        } while (IsItemInDropZone(itemList[currentIndex]) && attempts > 0);
+
+        if (currentIndex < 0 || currentIndex >= itemList.Count)
+        {
+            Debug.LogError("❌ currentIndex is out of range in ShowNextAvailableItem()");
+            return;
+        }
+
+        // ✅ Hide previous item before cycling
+        if (previousItem != null && !IsItemInDropZone(previousItem))
+        {
+            previousItem.SetActive(false);
+            previousItem.GetComponent<Collider2D>().enabled = false;
+            previousItem.GetComponent<DraggableItem>().enabled = false;
+            Debug.Log($"🔻 Hiding {previousItem.name} and DISABLING it.");
+        }
+
+        GameObject nextItem = itemList[currentIndex];
+
+        // ✅ Fully enable the next item
+        EnableItemInteraction(nextItem);
+
+        DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
+        if (draggable != null)
+        {
+            nextItem.transform.position = draggable.GetStartingPosition();
+        }
+
+        Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
     }
-
-    int attempts = itemList.Count;
-    GameObject previousItem = (currentIndex >= 0 && currentIndex < itemList.Count) ? itemList[currentIndex] : null;
-
-    do
-    {
-        currentIndex = (currentIndex + 1) % itemList.Count;
-    } while (IsItemInDropZone(itemList[currentIndex]) && --attempts > 0);
-
-    if (currentIndex < 0 || currentIndex >= itemList.Count)
-    {
-        Debug.LogError("❌ currentIndex is out of range in ShowNextAvailableItem()");
-        return;
-    }
-
-    // ✅ Deactivate the previous item if not in a drop zone
-    if (previousItem != null && !IsItemInDropZone(previousItem))
-    {
-        previousItem.SetActive(false);
-    }
-
-    // ✅ Activate and reset position of the next item
-    GameObject nextItem = itemList[currentIndex];
-    nextItem.SetActive(true);
-
-    // ✅ Ensure the next item appears at the correct start position
-    DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
-    if (draggable != null)
-    {
-        nextItem.transform.position = draggable.GetStartingPosition();
-    }
-    else
-    {
-        Debug.LogError($"❌ DraggableItem component missing on {nextItem.name}");
-    }
-
-    Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
-}
-
-public void RegisterItem(GameObject item)
-{
-    if (!itemList.Contains(item))
-    {
-        itemList.Add(item); // ✅ Add the item back to the cycling list
-        Debug.Log($"🔄 {item.name} re-added to item list.");
-    }
-}
-
-
 }

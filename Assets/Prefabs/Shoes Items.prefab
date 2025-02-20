@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8383437876054999319}
   - component: {fileID: 2467843088401295216}
   - component: {fileID: 6951886408492723092}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item_4
   m_TagString: ShoesItem
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 2596398519738971348}
   - component: {fileID: 5829846080331726523}
   - component: {fileID: 4590740165069368793}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item_1
   m_TagString: ShoesItem
   m_Icon: {fileID: 0}
@@ -411,7 +411,7 @@ GameObject:
   - component: {fileID: 1122519743419048000}
   - component: {fileID: 3834248424561125087}
   - component: {fileID: 4163955925390099583}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item_2
   m_TagString: ShoesItem
   m_Icon: {fileID: 0}
@@ -586,7 +586,7 @@ GameObject:
   - component: {fileID: 4529626154010544722}
   - component: {fileID: 8117980410819223908}
   - component: {fileID: 5625770902836657428}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Item_3
   m_TagString: ShoesItem
   m_Icon: {fileID: 0}
