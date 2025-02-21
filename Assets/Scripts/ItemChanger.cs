@@ -133,7 +133,7 @@ public class ItemChanger : MonoBehaviour
             itemList.Add(item);
 
             // ✅ Ensure it is interactive again
-            DropZone dropZone = FindObjectOfType<DropZone>();
+            DropZone dropZone = Object.FindFirstObjectByType<DropZone>();
             if (dropZone != null)
             {
                 dropZone.EnableItemInteraction(item);

@@ -110,14 +110,21 @@ public class DraggableItem : MonoBehaviour
                 EnableInteraction();
             }
         }
-        else if (pressDuration < shortPressThreshold)
-        {
-            if (!isOverDropZone && itemChanger != null)
-            {
-                Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
-                itemChanger.ChangeToNextItem();
-            }
-        }
+else if (pressDuration < shortPressThreshold)
+{
+    // ✅ Ensure clicking works even after swapping
+    if (itemChanger != null)
+    {
+        Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
+
+        // ✅ Reset drop zone state after swapping back
+        isOverDropZone = false; 
+        dropZone = null; 
+
+        itemChanger.ChangeToNextItem();
+    }
+}
+
 
         isDragging = false;
         hasDragged = false;
@@ -152,14 +159,20 @@ public class DraggableItem : MonoBehaviour
         this.enabled = true; // ✅ Ensure script is fully active
 
         // ✅ Force Unity's event system to recognize the object
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(gameObject);
+        //EventSystem.current.SetSelectedGameObject(null);
+        //EventSystem.current.SetSelectedGameObject(gameObject);
 
         Debug.Log($"✅ {gameObject.name} Fully Reset and Clickable in Start Position.");
     }
 
 
 
+public void ResetDropZoneState()
+{
+    isOverDropZone = false;
+    dropZone = null;
+    Debug.Log($"♻️ {gameObject.name} drop zone state reset.");
+}
 
 
 

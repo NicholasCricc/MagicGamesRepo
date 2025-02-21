@@ -38,15 +38,19 @@ public class DropZone : MonoBehaviour
             {
                 Vector3 returnPosition = draggable.GetStartingPosition();
 
-                // ✅ Deactivate before repositioning to prevent double activation
+                // ✅ Ensure swapped item is fully reset
                 currentItem.SetActive(false);
                 currentItem.transform.position = returnPosition;
 
-                // ✅ Ensure the item is fully re-enabled for clicking after swap
-                //EnableItemInteraction(currentItem);
+                // ✅ Remove drop zone reference to allow clicking
+                DraggableItem swappedDraggable = currentItem.GetComponent<DraggableItem>();
+                if (swappedDraggable != null)
+                {
+                    swappedDraggable.ResetDropZoneState(); // ✅ New function to reset drop zone state
+                }
 
-                Debug.Log($"🔄 {currentItem.name} moved back to {returnPosition} and re-enabled.");
                 ResetItemForCycling(currentItem);
+                Debug.Log($"🔄 {currentItem.name} moved back to {returnPosition} and is now ready for cycling.");
             }
         }
 
@@ -56,9 +60,6 @@ public class DropZone : MonoBehaviour
         newItem.transform.position = transform.position;
         Debug.Log($"✅ {newItem.name} placed in {gameObject.name}");
     }
-
-
-
 
     private void ResetItemForCycling(GameObject item)
     {
@@ -76,19 +77,12 @@ public class DropZone : MonoBehaviour
             item.transform.position = draggable.GetStartingPosition();
         }
 
-        // ✅ Reactivate item after resetting it properly
-        //item.SetActive(true);
-        //EnableItemInteraction(item);
-
         Debug.Log($"✅ {item.name} is now fully reset and ready for interaction.");
     }
-
 
     public void EnableItemInteraction(GameObject item)
     {
         if (item == null) return;
-
-        //item.SetActive(true);
 
         Collider2D collider = item.GetComponent<Collider2D>();
         if (collider != null)
@@ -104,6 +98,4 @@ public class DropZone : MonoBehaviour
             Debug.Log($"✅ DraggableItem script enabled for {item.name}");
         }
     }
-
-
 }

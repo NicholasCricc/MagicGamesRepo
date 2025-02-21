@@ -668,29 +668,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2727881720279692835, guid: 4d0c13dfd4c945140a78dada5cf40626, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2929198794894471556, guid: 4d0c13dfd4c945140a78dada5cf40626, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 3058217928935418835, guid: 4d0c13dfd4c945140a78dada5cf40626, type: 3}
       propertyPath: m_Name
       value: Hat Items
-      objectReference: {fileID: 0}
-    - target: {fileID: 4590740165069368793, guid: 4d0c13dfd4c945140a78dada5cf40626, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6733438357007116298, guid: 4d0c13dfd4c945140a78dada5cf40626, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463165513411253891, guid: 4d0c13dfd4c945140a78dada5cf40626, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -776,25 +756,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2727881720279692835, guid: 01872d4fdd3f4c747b7a257432b7415c, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2929198794894471556, guid: 01872d4fdd3f4c747b7a257432b7415c, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 3058217928935418835, guid: 01872d4fdd3f4c747b7a257432b7415c, type: 3}
       propertyPath: m_Name
       value: Shirt Items
-      objectReference: {fileID: 0}
-    - target: {fileID: 6733438357007116298, guid: 01872d4fdd3f4c747b7a257432b7415c, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463165513411253891, guid: 01872d4fdd3f4c747b7a257432b7415c, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -997,29 +961,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2727881720279692835, guid: 77304d5e261e2634c9bf3b08fbce2967, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2929198794894471556, guid: 77304d5e261e2634c9bf3b08fbce2967, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 3058217928935418835, guid: 77304d5e261e2634c9bf3b08fbce2967, type: 3}
       propertyPath: m_Name
       value: Shoes Items
-      objectReference: {fileID: 0}
-    - target: {fileID: 3058217928935418835, guid: 77304d5e261e2634c9bf3b08fbce2967, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6733438357007116298, guid: 77304d5e261e2634c9bf3b08fbce2967, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463165513411253891, guid: 77304d5e261e2634c9bf3b08fbce2967, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1211,25 +1155,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2727881720279692835, guid: b55ae51ff9806f241b4584d83f77bb61, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2929198794894471556, guid: b55ae51ff9806f241b4584d83f77bb61, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 3058217928935418835, guid: b55ae51ff9806f241b4584d83f77bb61, type: 3}
       propertyPath: m_Name
       value: Pants Items
-      objectReference: {fileID: 0}
-    - target: {fileID: 6733438357007116298, guid: b55ae51ff9806f241b4584d83f77bb61, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463165513411253891, guid: b55ae51ff9806f241b4584d83f77bb61, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
