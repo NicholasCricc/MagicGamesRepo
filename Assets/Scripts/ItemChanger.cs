@@ -126,22 +126,22 @@ public class ItemChanger : MonoBehaviour
         return false;
     }
 
-    public void RegisterItem(GameObject item)
-    {
-        if (!itemList.Contains(item))
-        {
-            itemList.Add(item);
+    //public void RegisterItem(GameObject item)
+    //{
+    //    if (!itemList.Contains(item))
+    //    {
+    //        itemList.Add(item);
 
-            // ✅ Ensure it is interactive again
-            DropZone dropZone = Object.FindFirstObjectByType<DropZone>();
-            if (dropZone != null)
-            {
-                dropZone.EnableItemInteraction(item);
-            }
+    //        // ✅ Ensure it is interactive again
+    //        DropZone dropZone = Object.FindFirstObjectByType<DropZone>();
+    //        if (dropZone != null)
+    //        {
+    //            dropZone.EnableItemInteraction(item);
+    //        }
 
-            Debug.Log($"🔄 {item.name} re-added and reactivated.");
-        }
-    }
+    //        Debug.Log($"🔄 {item.name} re-added and reactivated.");
+    //    }
+    //}
 
     public void ShowNextAvailableItem()
     {

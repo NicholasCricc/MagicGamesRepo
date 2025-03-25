@@ -1,0 +1,1918 @@
+fileFormatVersion: 2
+guid: 5163718efa78a4a48966fa0bbb1d5d7a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7245726751715612523
+    second: Top Stars_0
+  - first:
+      213: 6263083991260153249
+    second: Top Stars_1
+  - first:
+      213: 5143327645433544266
+    second: Top Stars_2
+  - first:
+      213: -5369063215445238521
+    second: Top Stars_3
+  - first:
+      213: -4597374946791678887
+    second: Top Stars_4
+  - first:
+      213: -4669801772654700419
+    second: Top Stars_5
+  - first:
+      213: -693347015668128242
+    second: Top Stars_6
+  - first:
+      213: 5709507967667702017
+    second: Top Stars_7
+  - first:
+      213: -4443707091072675902
+    second: Top Stars_8
+  - first:
+      213: 6274077634766550807
+    second: Top Stars_9
+  - first:
+      213: -3807650469837846888
+    second: Top Stars_10
+  - first:
+      213: 7047060085339887949
+    second: Top Stars_11
+  - first:
+      213: -8033671669564523894
+    second: Top Stars_12
+  - first:
+      213: -3449589081459533971
+    second: Top Stars_13
+  - first:
+      213: -4436390611997846949
+    second: Top Stars_14
+  - first:
+      213: 6986443914852413221
+    second: Top Stars_15
+  - first:
+      213: -772707465340019453
+    second: Top Stars_16
+  - first:
+      213: 2155670008588175868
+    second: Top Stars_17
+  - first:
+      213: 6204339307121909701
+    second: Top Stars_18
+  - first:
+      213: -4253814260931841451
+    second: Top Stars_19
+  - first:
+      213: -5489753963297966236
+    second: Top Stars_20
+  - first:
+      213: 1441908449541321614
+    second: Top Stars_21
+  - first:
+      213: 3860912040919361653
+    second: Top Stars_22
+  - first:
+      213: -8921003767438232849
+    second: Top Stars_23
+  - first:
+      213: 1089793152329936772
+    second: Top Stars_24
+  - first:
+      213: -2401713375037454370
+    second: Top Stars_25
+  - first:
+      213: -1693611438811283817
+    second: Top Stars_26
+  - first:
+      213: 1840383104485374238
+    second: Top Stars_27
+  - first:
+      213: 7316895790071881213
+    second: Top Stars_28
+  - first:
+      213: -6141810790780784554
+    second: Top Stars_29
+  - first:
+      213: -7863036293965677400
+    second: Top Stars_30
+  - first:
+      213: -3661519601058316299
+    second: Top Stars_31
+  - first:
+      213: -6346583372185521721
+    second: Top Stars_32
+  - first:
+      213: 2623788032441181530
+    second: Top Stars_33
+  - first:
+      213: -3785123770849613167
+    second: Top Stars_34
+  - first:
+      213: -5039615941265914202
+    second: Top Stars_35
+  - first:
+      213: -5981560547416090677
+    second: Top Stars_36
+  - first:
+      213: -7545387329277868670
+    second: Top Stars_37
+  - first:
+      213: 9188589144629528211
+    second: Top Stars_38
+  - first:
+      213: -6697950787461764409
+    second: Top Stars_39
+  - first:
+      213: -3235260690087956082
+    second: Top Stars_40
+  - first:
+      213: 4455955158861904983
+    second: Top Stars_41
+  - first:
+      213: 1166112217278891210
+    second: Top Stars_42
+  - first:
+      213: -1029285530723429061
+    second: Top Stars_43
+  - first:
+      213: 993157098897282895
+    second: Top Stars_44
+  - first:
+      213: 8568930048120630196
+    second: Top Stars_45
+  - first:
+      213: 4051823969441285597
+    second: Top Stars_46
+  - first:
+      213: -892555557317300394
+    second: Top Stars_47
+  - first:
+      213: -5730290478425148670
+    second: Top Stars_48
+  - first:
+      213: -2362673341008667522
+    second: Top Stars_49
+  - first:
+      213: 4359625535593371119
+    second: Top Stars_50
+  - first:
+      213: 7982353310951470841
+    second: Top Stars_51
+  - first:
+      213: 5624331053543908177
+    second: Top Stars_52
+  - first:
+      213: -1144581194579649385
+    second: Top Stars_53
+  - first:
+      213: 2020574572577017880
+    second: Top Stars_54
+  - first:
+      213: -8990137650204666531
+    second: Top Stars_55
+  - first:
+      213: 8704209732496988173
+    second: Top Stars_56
+  - first:
+      213: 7703402405139884230
+    second: Top Stars_57
+  - first:
+      213: -645776517627748422
+    second: Top Stars_58
+  - first:
+      213: 7254585041100800278
+    second: Top Stars_59
+  - first:
+      213: 6067564687350657844
+    second: Top Stars_60
+  - first:
+      213: -5471657365896150784
+    second: Top Stars_61
+  - first:
+      213: -6331984072337192033
+    second: Top Stars_62
+  - first:
+      213: 3463340667116146439
+    second: Top Stars_63
+  - first:
+      213: -5080922368389041630
+    second: Top Stars_64
+  - first:
+      213: 2294076197337765670
+    second: Top Stars_65
+  - first:
+      213: 4798512857315899476
+    second: Top Stars_66
+  - first:
+      213: 1636862855043587327
+    second: Top Stars_67
+  - first:
+      213: -2302123834089251498
+    second: Top Stars_68
+  - first:
+      213: -1844215510460447019
+    second: Top Stars_69
+  - first:
+      213: -1895844390977864440
+    second: Top Stars_70
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Top Stars_0
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 244
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5982278a8e1027b90800000000000000
+      internalID: -7245726751715612523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_1
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 236
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a54f71f4b1fae650800000000000000
+      internalID: 6263083991260153249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_2
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 232
+        width: 27
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4e33853e35c06740800000000000000
+      internalID: 5143327645433544266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_3
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 231
+        width: 27
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70d15cab3714d75b0800000000000000
+      internalID: -5369063215445238521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_4
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 233
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95c933508d7d230c0800000000000000
+      internalID: -4597374946791678887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_5
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 226
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d785d698708813fb0800000000000000
+      internalID: -4669801772654700419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_6
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 220
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e062601109cb066f0800000000000000
+      internalID: -693347015668128242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_7
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 201
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 109881f0f3f3c3f40800000000000000
+      internalID: 5709507967667702017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_8
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 185
+        width: 38
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cf8ab6c1f7c452c0800000000000000
+      internalID: -4443707091072675902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_9
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 205
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 717bb790e50021750800000000000000
+      internalID: 6274077634766550807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_10
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 142
+        width: 71
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 896477c4212882bc0800000000000000
+      internalID: -3807650469837846888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_11
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 196
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4994898fcf2cc160800000000000000
+      internalID: 7047060085339887949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_12
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 203
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8abc754e2aa28090800000000000000
+      internalID: -8033671669564523894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_13
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 189
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d67d982d1099020d0800000000000000
+      internalID: -3449589081459533971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_14
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 181
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b529dfe4e36ce62c0800000000000000
+      internalID: -4436390611997846949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_15
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 169
+        width: 26
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52fa7fb89b5d4f060800000000000000
+      internalID: 6986443914852413221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_16
+      rect:
+        serializedVersion: 2
+        x: 1358
+        y: 168
+        width: 25
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30d9d1d77aac645f0800000000000000
+      internalID: -772707465340019453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_17
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 168
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf98cda937a7aed10800000000000000
+      internalID: 2155670008588175868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_18
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 174
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cf9ef25abd3a1650800000000000000
+      internalID: 6204339307121909701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_19
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 168
+        width: 20
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 552baa4a77a67f4c0800000000000000
+      internalID: -4253814260931841451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_20
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 180
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 467f4593bd970d3b0800000000000000
+      internalID: -5489753963297966236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_21
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 173
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e837b856810b20410800000000000000
+      internalID: 1441908449541321614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_22
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 167
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 578e6049b07b49530800000000000000
+      internalID: 3860912040919361653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_23
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 143
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe23ce9c65a323480800000000000000
+      internalID: -8921003767438232849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_24
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 161
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48f674b1919bf1f00800000000000000
+      internalID: 1089793152329936772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_25
+      rect:
+        serializedVersion: 2
+        x: 1161
+        y: 164
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed7869409666baed0800000000000000
+      internalID: -2401713375037454370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_26
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 153
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79e7d1a9e551f78e0800000000000000
+      internalID: -1693611438811283817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_27
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 154
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e193b79ceaa5a8910800000000000000
+      internalID: 1840383104485374238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_28
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 151
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfd19c954f5da8560800000000000000
+      internalID: 7316895790071881213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_29
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 148
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 650b9d160a7e3caa0800000000000000
+      internalID: -6141810790780784554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_30
+      rect:
+        serializedVersion: 2
+        x: 1097
+        y: 125
+        width: 36
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8acfb2a9622e0e290800000000000000
+      internalID: -7863036293965677400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_31
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 158
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fff9c8825baf2dc0800000000000000
+      internalID: -3661519601058316299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_32
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 140
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c13b737c086ce7a0800000000000000
+      internalID: -6346583372185521721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_33
+      rect:
+        serializedVersion: 2
+        x: 1136
+        y: 144
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a55e3976051996420800000000000000
+      internalID: 2623788032441181530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_34
+      rect:
+        serializedVersion: 2
+        x: 1136
+        y: 85
+        width: 66
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19a2f9f1cf9887bc0800000000000000
+      internalID: -3785123770849613167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_35
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 135
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a60370a000bf0ab0800000000000000
+      internalID: -5039615941265914202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_36
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 141
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc7d5c0bf5a3dfca0800000000000000
+      internalID: -5981560547416090677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_37
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 125
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 285c8a18336694790800000000000000
+      internalID: -7545387329277868670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_38
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 113
+        width: 24
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39647a0d42d648f70800000000000000
+      internalID: 9188589144629528211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_39
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 131
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ca2b4efe391c03a0800000000000000
+      internalID: -6697950787461764409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_40
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 125
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e81b5832b8b0a13d0800000000000000
+      internalID: -3235260690087956082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_41
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 133
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75c780bbb9bb6dd30800000000000000
+      internalID: 4455955158861904983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_42
+      rect:
+        serializedVersion: 2
+        x: 285
+        y: 123
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac4c62f12ecde2010800000000000000
+      internalID: 1166112217278891210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_43
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 129
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b35d7c0634e37b1f0800000000000000
+      internalID: -1029285530723429061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_44
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 109
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f471ee59e1768cd00800000000000000
+      internalID: 993157098897282895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_45
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 108
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bba6678a74fae670800000000000000
+      internalID: 8568930048120630196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_46
+      rect:
+        serializedVersion: 2
+        x: 1123
+        y: 115
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd506f6ce68fa3830800000000000000
+      internalID: 4051823969441285597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_47
+      rect:
+        serializedVersion: 2
+        x: 1413
+        y: 109
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65f2dc713710d93f0800000000000000
+      internalID: -892555557317300394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_48
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 85
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2037aa59b2be970b0800000000000000
+      internalID: -5730290478425148670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_49
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 65
+        width: 48
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7c94e44d19163fd0800000000000000
+      internalID: -2362673341008667522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_50
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 95
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe5d3ca8350808c30800000000000000
+      internalID: 4359625535593371119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_51
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 96
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f6fce24b0407ce60800000000000000
+      internalID: 7982353310951470841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_52
+      rect:
+        serializedVersion: 2
+        x: 1096
+        y: 86
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 153eea15b43ad0e40800000000000000
+      internalID: 5624331053543908177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_53
+      rect:
+        serializedVersion: 2
+        x: 1124
+        y: 93
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79cdc70c771ad10f0800000000000000
+      internalID: -1144581194579649385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_54
+      rect:
+        serializedVersion: 2
+        x: 1219
+        y: 90
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 810d3a84ed58a0c10800000000000000
+      internalID: 2020574572577017880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_55
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 68
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d559fad507d9c3380800000000000000
+      internalID: -8990137650204666531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_56
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 69
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d081bf382a09bc870800000000000000
+      internalID: 8704209732496988173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_57
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 57
+        width: 22
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c8a0405cabf7ea60800000000000000
+      internalID: 7703402405139884230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_58
+      rect:
+        serializedVersion: 2
+        x: 1115
+        y: 75
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abf528ebdadb907f0800000000000000
+      internalID: -645776517627748422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_59
+      rect:
+        serializedVersion: 2
+        x: 1144
+        y: 69
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6110daf88a67da460800000000000000
+      internalID: 7254585041100800278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_60
+      rect:
+        serializedVersion: 2
+        x: 1173
+        y: 77
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4337d319fe1543450800000000000000
+      internalID: 6067564687350657844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_61
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 67
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0014c15ad94c014b0800000000000000
+      internalID: -5471657365896150784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_62
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 59
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9b09e4d8064028a0800000000000000
+      internalID: -6331984072337192033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_63
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 50
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70f4f97bcf1401030800000000000000
+      internalID: 3463340667116146439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_64
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 53
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 222b5dc9600fc79b0800000000000000
+      internalID: -5080922368389041630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_65
+      rect:
+        serializedVersion: 2
+        x: 1094
+        y: 32
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6271ffd952236df10800000000000000
+      internalID: 2294076197337765670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_66
+      rect:
+        serializedVersion: 2
+        x: 1120
+        y: 13
+        width: 45
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4587576250eb79240800000000000000
+      internalID: 4798512857315899476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_67
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 10
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffc97ec181e47b610800000000000000
+      internalID: 1636862855043587327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_68
+      rect:
+        serializedVersion: 2
+        x: 926
+        y: 8
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65d5620f1963d00e0800000000000000
+      internalID: -2302123834089251498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_69
+      rect:
+        serializedVersion: 2
+        x: 1045
+        y: 0
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d64db9a3c70866e0800000000000000
+      internalID: -1844215510460447019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Top Stars_70
+      rect:
+        serializedVersion: 2
+        x: 1417
+        y: 1
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80df85e229b90b5e0800000000000000
+      internalID: -1895844390977864440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
