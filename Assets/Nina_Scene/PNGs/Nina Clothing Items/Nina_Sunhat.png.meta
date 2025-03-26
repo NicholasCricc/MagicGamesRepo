@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Nina_Sunhat_0: 712796342843854889
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

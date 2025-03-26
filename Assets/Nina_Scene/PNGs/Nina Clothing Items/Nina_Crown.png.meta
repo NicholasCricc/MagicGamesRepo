@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Nina_Crown_0: -2312810054588526641
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

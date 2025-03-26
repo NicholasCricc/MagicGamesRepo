@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Nina_HairBow_0: -5745872450018051721
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

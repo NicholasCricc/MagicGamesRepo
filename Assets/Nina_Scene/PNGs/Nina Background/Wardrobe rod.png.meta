@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Wardrobe rod_0: -2194571230356509493
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
