@@ -75,6 +75,7 @@ public class DropZone : MonoBehaviour
         if (draggable != null)
         {
             item.transform.position = draggable.GetStartingPosition();
+            item.transform.localScale = draggable.GetOriginalScale();
         }
 
         Debug.Log($"✅ {item.name} is now fully reset and ready for interaction.");

@@ -8,7 +8,7 @@ public class DraggableItem : MonoBehaviour
     private bool isDragging = false;
     private bool isOverDropZone = false;
     private Transform dropZone;
-
+    private Vector3 originalScale;
     private float pressStartTime;
     private float pressDuration;
     private bool hasDragged = false;
@@ -22,7 +22,10 @@ public class DraggableItem : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
+
         itemChanger = GetComponentInParent<ItemChanger>();
+
+        originalScale = transform.localScale;
 
         Debug.Log($"🔵 {gameObject.name} Initialized - Start Position: {startPosition}");
     }
@@ -57,6 +60,14 @@ public class DraggableItem : MonoBehaviour
         if (isDragging)
         {
             transform.position = new Vector3(currentMousePosition.x, currentMousePosition.y, startPosition.z);
+
+            // ✅ Bring to front on drag
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sortingOrder = 5;
+            }
+
         }
     }
 
@@ -64,6 +75,8 @@ public class DraggableItem : MonoBehaviour
     void OnMouseUp()
     {
         pressDuration = Time.time - pressStartTime;
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 1;
         Debug.Log($"🔴 {gameObject.name} Released - isOverDropZone: {isOverDropZone}, DropZone: {(dropZone != null ? dropZone.name : "None")}");
 
         if (hasDragged)
@@ -86,6 +99,16 @@ public class DraggableItem : MonoBehaviour
 
                     dropZoneScript.PlaceItem(this.gameObject);
                     transform.position = dropZone.position;
+                    // ✅ Apply custom scale based on item name
+                    if (gameObject.name == "Nina_Dress")
+                    {
+                        transform.localScale = new Vector3(1.055f, 1.055f, 1f);
+                    }
+                    else
+                    {
+                        transform.localScale = Vector3.one;
+                    }
+
                     Debug.Log($"✅ {gameObject.name} placed in {dropZone.name}");
 
                     StartCoroutine(DisableColliderAfterDelay());
@@ -167,7 +190,7 @@ else if (pressDuration < shortPressThreshold)
 
 
 
-public void ResetDropZoneState()
+    public void ResetDropZoneState()
 {
     isOverDropZone = false;
     dropZone = null;
@@ -201,4 +224,16 @@ public void ResetDropZoneState()
     {
         return startPosition;
     }
+
+    public void CacheStartPosition()
+    {
+        startPosition = transform.position;
+    }
+
+    public Vector3 GetOriginalScale()
+    {
+        return originalScale;
+    }
+
+
 }

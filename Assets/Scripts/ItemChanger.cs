@@ -73,7 +73,7 @@ public class ItemChanger : MonoBehaviour
         DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
         if (draggable != null)
         {
-            nextItem.transform.position = draggable.GetStartingPosition();
+            draggable.CacheStartPosition();
         }
 
         Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
@@ -89,6 +89,7 @@ public class ItemChanger : MonoBehaviour
         Collider2D collider = item.GetComponent<Collider2D>();
         if (collider != null)
         {
+            
             collider.enabled = false; // ✅ Temporarily disable collider
             collider.enabled = true;  // ✅ Reactivate collider to force Unity to detect clicks
 
@@ -98,6 +99,7 @@ public class ItemChanger : MonoBehaviour
         DraggableItem draggable = item.GetComponent<DraggableItem>();
         if (draggable != null)
         {
+            draggable.CacheStartPosition();
             draggable.enabled = false;
             draggable.enabled = true; // ✅ Reactivate the script
 
