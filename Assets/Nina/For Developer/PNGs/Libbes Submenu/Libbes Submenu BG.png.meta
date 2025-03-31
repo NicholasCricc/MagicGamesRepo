@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Libbes Submenu BG_0: 5607958427838717627
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

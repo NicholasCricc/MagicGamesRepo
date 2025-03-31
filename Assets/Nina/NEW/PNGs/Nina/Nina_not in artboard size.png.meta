@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Nina_not in artboard size_0: -605246986289957040
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
