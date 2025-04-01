@@ -125,17 +125,32 @@ if (isDragging)
 
 
 
-                // ✅ Custom scale logic
-                if (gameObject.name == "Nina_Dress")
-                {
-                    transform.localScale = new Vector3(1.055f, 1.055f, 1f);
-                }
-                else
-                {
-                    transform.localScale = Vector3.one;
-                }
+                    // ✅ Custom scale logic
+                    if (gameObject.name == "Nina_Dress")
+                    {
+                        transform.localScale = new Vector3(1.055f, 1.055f, 1f);
+                    }
+                    else if (gameObject.name == "Hairband")
+                    {
+                        transform.localScale = new Vector3(0.95f, 0.95f, 1f);
+                    }
+                    else if (gameObject.name == "Hat")
+                    {
+                        transform.localScale = new Vector3(0.8f, 0.8f, 1f);
+                    }
+                    else if (gameObject.name == "Tiara")
+                    {
+                        transform.localScale = new Vector3(0.9f, 0.9f, 1f);
+                    }
+                    // Tiara and Hairbow do not require scale changes
+                    else
+                    {
+                        transform.localScale = Vector3.one;
+                    }
 
-                Debug.Log($"✅ {gameObject.name} placed in {dropZone.name}");
+
+
+                    Debug.Log($"✅ {gameObject.name} placed in {dropZone.name}");
 
                 StartCoroutine(DisableColliderAfterDelay());
 
@@ -239,6 +254,7 @@ SetAllChildSortingOrder(2); // Or use 0 if that’s your base order
     void OnTriggerEnter2D(Collider2D collision)
     {
         if ((collision.CompareTag("DropZone_Head") && gameObject.CompareTag("HatItem")) ||
+            (collision.CompareTag("DropZone_Head_GS") && gameObject.CompareTag("HatItemGS")) ||
             (collision.CompareTag("DropZone_Body") && gameObject.CompareTag("ShirtItem")) ||
             (collision.CompareTag("DropZone_Legs") && gameObject.CompareTag("PantsItem")) ||
             (collision.CompareTag("DropZone_Feet") && gameObject.CompareTag("ShoesItem")))
