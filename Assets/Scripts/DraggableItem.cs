@@ -91,110 +91,90 @@ if (isDragging)
 
 
     void OnMouseUp()
-{
-    pressDuration = Time.time - pressStartTime;
-    Debug.Log($"🔴 {gameObject.name} Released - isOverDropZone: {isOverDropZone}, DropZone: {(dropZone != null ? dropZone.name : "None")}");
-
-    if (hasDragged)
     {
-        if (isOverDropZone && dropZone != null)
+        pressDuration = Time.time - pressStartTime;
+        Debug.Log($"🔴 {gameObject.name} Released - isOverDropZone: {isOverDropZone}, DropZone: {(dropZone != null ? dropZone.name : "None")}");
+
+        if (hasDragged)
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // ✅ Ensure item is still inside the drop zone when released
-            if (dropZone.GetComponent<Collider2D>().OverlapPoint(mousePosition))
+            if (isOverDropZone && dropZone != null)
             {
-                DropZone dropZoneScript = dropZone.GetComponent<DropZone>();
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-                if (dropZoneScript == null)
+                if (dropZone.GetComponent<Collider2D>().OverlapPoint(mousePosition))
                 {
-                    Debug.LogError($"❌ DropZone script missing on {dropZone.name}");
-                    transform.position = startPosition;
-                    return;
-                }
+                    DropZone dropZoneScript = dropZone.GetComponent<DropZone>();
 
-                dropZoneScript.PlaceItem(this.gameObject);
-                if (gameObject.name.Contains("Sneakers") || gameObject.name.Contains("Shoes"))
-                {
-                    transform.position = dropZone.position + dragOffset;
-                }
-                else
-                {
-                    transform.position = dropZone.position;
-                }
+                    if (dropZoneScript == null)
+                    {
+                        Debug.LogError($"❌ DropZone script missing on {dropZone.name}");
+                        transform.position = startPosition;
+                        return;
+                    }
+
+                    dropZoneScript.PlaceItem(this.gameObject);
 
 
-
-                    // ✅ Custom scale logic
-                    if (gameObject.name == "Nina_Dress")
-                    {
-                        transform.localScale = new Vector3(1.055f, 1.055f, 1f);
-                    }
-                    else if (gameObject.name == "Hairband")
-                    {
-                        transform.localScale = new Vector3(0.95f, 0.95f, 1f);
-                    }
-                    else if (gameObject.name == "Hat")
-                    {
-                        transform.localScale = new Vector3(0.8f, 0.8f, 1f);
-                    }
-                    else if (gameObject.name == "Tiara")
-                    {
-                        transform.localScale = new Vector3(0.9f, 0.9f, 1f);
-                    }
-                    // Tiara and Hairbow do not require scale changes
-                    else
-                    {
+                        transform.position = Vector3.zero;
                         transform.localScale = Vector3.one;
-                    }
-
-
 
                     Debug.Log($"✅ {gameObject.name} placed in {dropZone.name}");
 
-                StartCoroutine(DisableColliderAfterDelay());
+                    // ✅ Disable collider only — keep visible and enabled
+                    StartCoroutine(DisableColliderAfterDelay());
 
-                if (itemChanger != null)
+                    if (itemChanger != null)
+                    {
+                        itemChanger.MarkItemAsPlaced(this.gameObject);
+
+                        itemChanger.ResetIndex();
+
+                        if (itemChanger.HasAvailableItems())
+                        {
+                            itemChanger.ShowNextAvailableItem();
+                        }
+                        else
+                        {
+                            Debug.Log("🟣 No more items to show on the rod.");
+                        }
+
+                    }
+                }
+                else
                 {
-                    itemChanger.ShowNextAvailableItem();
+                    Debug.Log($"❌ {gameObject.name} dropped outside valid drop zone, returning to start.");
+                    transform.position = startPosition;
+                    transform.localScale = originalScale;
+                    EnableInteraction();
                 }
             }
             else
             {
-                Debug.Log($"❌ {gameObject.name} dropped outside valid drop zone, returning to start.");
+                Debug.Log($"❌ {gameObject.name} dropped outside any valid drop zone, returning to start.");
                 transform.position = startPosition;
                 transform.localScale = originalScale;
                 EnableInteraction();
             }
         }
-        else
+        else if (pressDuration < shortPressThreshold)
         {
-            Debug.Log($"❌ {gameObject.name} dropped outside any valid drop zone, returning to start.");
-            transform.position = startPosition;
-            transform.localScale = originalScale;
-            EnableInteraction();
-        }
-    }
-    else if (pressDuration < shortPressThreshold)
-    {
-        if (itemChanger != null)
-        {
-            Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
+            if (itemChanger != null)
+            {
+                Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
 
-            isOverDropZone = false;
-            dropZone = null;
+                isOverDropZone = false;
+                dropZone = null;
 
-            itemChanger.ChangeToNextItem();
+                itemChanger.ChangeToNextItem();
+            }
         }
+
+        SetAllChildSortingOrder(2);
+        isDragging = false;
+        hasDragged = false;
     }
 
-// ✅ Reset sorting order after drag ends
-SetAllChildSortingOrder(2); // Or use 0 if that’s your base order
 
-
-    isDragging = false;
-    hasDragged = false;
-}
 
 
 
@@ -246,10 +226,19 @@ SetAllChildSortingOrder(2); // Or use 0 if that’s your base order
     private IEnumerator DisableColliderAfterDelay()
     {
         yield return new WaitForSeconds(0.1f);
-        GetComponent<Collider2D>().enabled = false;
-        this.enabled = false;
-        Debug.Log($"🛑 {gameObject.name} Collider Disabled.");
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null)
+        {
+            col.enabled = false; // ✅ Just disable the collider
+        }
+
+        // ❌ Do NOT disable the script!
+        // this.enabled = false;
+
+        Debug.Log($"🛑 {gameObject.name} Collider Disabled, script still active.");
     }
+
 
     void OnTriggerEnter2D(Collider2D collision)
     {

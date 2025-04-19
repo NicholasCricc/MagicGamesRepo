@@ -67,19 +67,33 @@ public class DropZone : MonoBehaviour
 
         Debug.Log($"♻️ Resetting {item.name} for cycling.");
 
-        // ✅ Ensure the item is deactivated before repositioning
-        item.SetActive(false);
-
-        // ✅ Reset position
+        // ✅ Reset position & scale
         DraggableItem draggable = item.GetComponent<DraggableItem>();
         if (draggable != null)
         {
             item.transform.position = draggable.GetStartingPosition();
             item.transform.localScale = draggable.GetOriginalScale();
+            draggable.ResetDropZoneState(); // ✅ Ensure future clicks work
+        }
+
+        // ✅ Reactivate and re-enable
+        item.SetActive(true);
+        EnableItemInteraction(item);
+
+        // ✅ Re-register the item with ItemChanger
+        if (itemChanger != null)
+        {
+            if (!itemChanger.itemList.Contains(item))
+            {
+                itemChanger.itemList.Add(item);
+                itemChanger.ResetIndex(); // force update to avoid out-of-sync cycling
+                Debug.Log($"✅ {item.name} re-added to itemList.");
+            }
         }
 
         Debug.Log($"✅ {item.name} is now fully reset and ready for interaction.");
     }
+
 
     public void EnableItemInteraction(GameObject item)
     {

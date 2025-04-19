@@ -145,11 +145,48 @@ public class ItemChanger : MonoBehaviour
     //    }
     //}
 
+    public void MarkItemAsPlaced(GameObject placedItem)
+    {
+        if (itemList.Contains(placedItem))
+        {
+            itemList.Remove(placedItem); // ✅ Stop cycling this item
+            Debug.Log($"✅ {placedItem.name} marked as placed and removed from itemList.");
+        }
+    }
+
+    public bool HasAvailableItems()
+    {
+        return itemList != null && itemList.Count > 0;
+    }
+
+    public void ResetIndex()
+    {
+        currentIndex = -1;
+    }
+
+
     public void ShowNextAvailableItem()
     {
         if (itemList == null || itemList.Count == 0)
         {
             Debug.LogError("❌ itemList is empty in ShowNextAvailableItem()");
+            return;
+        }
+
+        // ✅ Check if all items are already placed
+        bool allPlaced = true;
+        foreach (GameObject item in itemList)
+        {
+            if (!IsItemInDropZone(item))
+            {
+                allPlaced = false;
+                break;
+            }
+        }
+
+        if (allPlaced)
+        {
+            Debug.Log("🟣 All items are placed. Nothing to show.");
             return;
         }
 
@@ -163,7 +200,6 @@ public class ItemChanger : MonoBehaviour
             currentIndex = (currentIndex + 1) % itemList.Count;
             attempts--;
 
-            // ✅ Prevent infinite loop
             if (currentIndex == startIndex)
             {
                 Debug.LogWarning("⚠️ No available items to cycle through. Stopping.");
@@ -178,7 +214,7 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
-        // ✅ Hide previous item before cycling
+        // ✅ Hide previous item if it’s not already placed
         if (previousItem != null && !IsItemInDropZone(previousItem))
         {
             previousItem.SetActive(false);
@@ -200,4 +236,5 @@ public class ItemChanger : MonoBehaviour
 
         Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
     }
+
 }
