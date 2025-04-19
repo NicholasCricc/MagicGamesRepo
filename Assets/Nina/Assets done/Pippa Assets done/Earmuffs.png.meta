@@ -210,7 +210,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Earmuffs_0: -5359838139583997747
+      Earmuffs_1: 4152758734196820193
+      Earmuffs_2: -2414380137322990270
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -235,7 +235,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Gloves for Ninu_0: 797061760089276340
+      Gloves for Ninu_1: 7560704154778401466
+      Gloves for Ninu_2: -600608142875538066
+      Gloves for Ninu_3: 3720224173858725833
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

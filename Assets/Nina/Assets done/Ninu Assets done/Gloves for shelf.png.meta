@@ -185,7 +185,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Gloves for shelf_0: 762152396482824154
+      Gloves for shelf_1: -3090745227038907554
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Pygama hat_0: 521301704629868656
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
