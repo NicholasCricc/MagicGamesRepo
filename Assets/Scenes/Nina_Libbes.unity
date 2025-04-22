@@ -3781,7 +3781,7 @@ GameObject:
   - component: {fileID: 1499717595}
   - component: {fileID: 1499717596}
   m_Layer: 0
-  m_Name: ---------Shirts------------
+  m_Name: ---------Shirts&Pants------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4312,6 +4312,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DropZone_Head_GS
       objectReference: {fileID: 0}
+    - target: {fileID: 5303211856652405889, guid: c0c80801627c8cd45b8fbab9a6d62b87, type: 3}
+      propertyPath: m_TagString
+      value: DropZone_Head_GS
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4437,8 +4441,8 @@ Transform:
   m_GameObject: {fileID: 1690277930}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.3066, y: 0, z: 0}
+  m_LocalScale: {x: 1.0907, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 980558020}

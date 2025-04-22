@@ -6,6 +6,8 @@ public class ItemChanger : MonoBehaviour
     [Header("List of Items")]
     public List<GameObject> itemList;
     private int currentIndex = -1;
+    private GameObject currentRodItem;
+
 
     void Start()
     {
@@ -35,20 +37,25 @@ public class ItemChanger : MonoBehaviour
 
         int attempts = itemList.Count;
         int startIndex = currentIndex;
+        bool found = false;
 
-        do
+        for (int i = 0; i < attempts; i++)
         {
             currentIndex = (currentIndex + 1) % itemList.Count;
-            attempts--;
 
-            // ✅ Prevent infinite loop
-            if (currentIndex == startIndex)
+            if (!IsItemInDropZone(itemList[currentIndex]))
             {
-                Debug.LogWarning("⚠️ No available items to cycle through. Stopping.");
-                return;
+                found = true;
+                break;
             }
+        }
 
-        } while (IsItemInDropZone(itemList[currentIndex]) && attempts > 0);
+        if (!found)
+        {
+            Debug.LogWarning("⚠️ No available items to cycle through.");
+            return;
+        }
+
 
         if (attempts <= 0)
         {
@@ -69,6 +76,8 @@ public class ItemChanger : MonoBehaviour
 
         // ✅ Ensure only the next item is active
         EnableItemInteraction(nextItem);
+        currentRodItem = nextItem; // ✅ Track the new rod item
+
 
         DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
         if (draggable != null)
@@ -128,31 +137,22 @@ public class ItemChanger : MonoBehaviour
         return false;
     }
 
-    //public void RegisterItem(GameObject item)
-    //{
-    //    if (!itemList.Contains(item))
-    //    {
-    //        itemList.Add(item);
-
-    //        // ✅ Ensure it is interactive again
-    //        DropZone dropZone = Object.FindFirstObjectByType<DropZone>();
-    //        if (dropZone != null)
-    //        {
-    //            dropZone.EnableItemInteraction(item);
-    //        }
-
-    //        Debug.Log($"🔄 {item.name} re-added and reactivated.");
-    //    }
-    //}
-
     public void MarkItemAsPlaced(GameObject placedItem)
     {
         if (itemList.Contains(placedItem))
         {
             itemList.Remove(placedItem); // ✅ Stop cycling this item
             Debug.Log($"✅ {placedItem.name} marked as placed and removed from itemList.");
+
+            // ✅ Clear currentRodItem if it's the same item
+            if (currentRodItem == placedItem)
+            {
+                currentRodItem = null;
+                Debug.Log($"🧹 {placedItem.name} was currentRodItem — cleared reference.");
+            }
         }
     }
+
 
     public bool HasAvailableItems()
     {
@@ -191,8 +191,6 @@ public class ItemChanger : MonoBehaviour
         }
 
         int attempts = itemList.Count;
-        GameObject previousItem = (currentIndex >= 0 && currentIndex < itemList.Count) ? itemList[currentIndex] : null;
-
         int startIndex = currentIndex;
 
         do
@@ -214,19 +212,20 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
-        // ✅ Hide previous item if it’s not already placed
-        if (previousItem != null && !IsItemInDropZone(previousItem))
+        // ✅ Always clean up the currentRodItem
+        if (currentRodItem != null)
         {
-            previousItem.SetActive(false);
-            previousItem.GetComponent<Collider2D>().enabled = false;
-            previousItem.GetComponent<DraggableItem>().enabled = false;
-            Debug.Log($"🔻 Hiding {previousItem.name} and DISABLING it.");
+            currentRodItem.SetActive(false);
+            currentRodItem.GetComponent<Collider2D>().enabled = false;
+            currentRodItem.GetComponent<DraggableItem>().enabled = false;
+            Debug.Log($"🔻 Cleaned up lingering rod item: {currentRodItem.name}");
+            currentRodItem = null;
         }
 
         GameObject nextItem = itemList[currentIndex];
 
-        // ✅ Fully enable the next item
         EnableItemInteraction(nextItem);
+        currentRodItem = nextItem;
 
         DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
         if (draggable != null)
@@ -236,5 +235,39 @@ public class ItemChanger : MonoBehaviour
 
         Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
     }
+
+    public bool CompareCurrentRodItem(GameObject item)
+    {
+        return currentRodItem == item;
+    }
+
+    public void ClearCurrentRodItem()
+    {
+        currentRodItem = null;
+    }
+
+    public void SetCurrentRodItem(GameObject item)
+    {
+        if (currentRodItem != null && currentRodItem != item)
+        {
+            // ✅ Only deactivate the previous rod item if it’s NOT placed
+            if (!IsItemInDropZone(currentRodItem))
+            {
+                currentRodItem.SetActive(false);
+                currentRodItem.GetComponent<Collider2D>().enabled = false;
+                currentRodItem.GetComponent<DraggableItem>().enabled = false;
+                Debug.Log($"🧹 Previous rod item {currentRodItem.name} deactivated.");
+            }
+            else
+            {
+                Debug.Log($"⚠️ {currentRodItem.name} is placed — not deactivating.");
+            }
+        }
+
+        currentRodItem = item;
+        Debug.Log($"📌 New rod item set: {item.name}");
+    }
+
+
 
 }

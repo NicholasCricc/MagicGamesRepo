@@ -18,6 +18,7 @@ TagManager:
   - DropZone_Legs
   - DropZone_Feet
   - HatItemGS
+  - DropZone_Head_GS
   layers:
   - Default
   - TransparentFX

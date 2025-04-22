@@ -11,12 +11,15 @@ public class DropZone : MonoBehaviour
         itemChanger = Object.FindFirstObjectByType<ItemChanger>();
     }
 
-    public void PlaceItem(GameObject newItem)
+    public GameObject PlaceItem(GameObject newItem)
     {
         Debug.Log($"📥 {newItem.name} is trying to be placed in {gameObject.name}");
 
+        GameObject returnedItem = null;
+
         if (isOccupied)
         {
+            returnedItem = currentItem;
             SwapItem(newItem);
         }
         else
@@ -25,7 +28,10 @@ public class DropZone : MonoBehaviour
             currentItem = newItem;
             Debug.Log($"✅ {newItem.name} is now in {gameObject.name}");
         }
+
+        return returnedItem;
     }
+
 
     private void SwapItem(GameObject newItem)
     {
@@ -86,13 +92,18 @@ public class DropZone : MonoBehaviour
             if (!itemChanger.itemList.Contains(item))
             {
                 itemChanger.itemList.Add(item);
-                itemChanger.ResetIndex(); // force update to avoid out-of-sync cycling
                 Debug.Log($"✅ {item.name} re-added to itemList.");
             }
+
+            itemChanger.ResetIndex(); // force update to avoid out-of-sync cycling
+
+            // ✅ Track this as the current rod item and hide previous one if necessary
+            itemChanger.SetCurrentRodItem(item);
         }
 
         Debug.Log($"✅ {item.name} is now fully reset and ready for interaction.");
     }
+
 
 
     public void EnableItemInteraction(GameObject item)

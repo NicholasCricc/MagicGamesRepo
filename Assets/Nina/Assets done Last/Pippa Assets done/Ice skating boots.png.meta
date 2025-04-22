@@ -185,7 +185,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Ice skating boots_0: -1009810287091180264
+      Ice skating boots_1: 6532068356729727075
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

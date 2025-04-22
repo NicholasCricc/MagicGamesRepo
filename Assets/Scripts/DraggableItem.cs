@@ -112,11 +112,11 @@ if (isDragging)
                         return;
                     }
 
-                    dropZoneScript.PlaceItem(this.gameObject);
+                    GameObject returnedItem = dropZoneScript.PlaceItem(this.gameObject);
 
 
-                        transform.position = Vector3.zero;
-                        transform.localScale = Vector3.one;
+                    transform.position = Vector3.zero;
+                    transform.localScale = Vector3.one;
 
                     Debug.Log($"✅ {gameObject.name} placed in {dropZone.name}");
 
@@ -125,17 +125,26 @@ if (isDragging)
 
                     if (itemChanger != null)
                     {
-                        itemChanger.MarkItemAsPlaced(this.gameObject);
+                        if (itemChanger.CompareCurrentRodItem(this.gameObject))
+                        {
+                            itemChanger.ClearCurrentRodItem();
+                            Debug.Log($"🧼 {gameObject.name} was on rod — now placed, so untracked.");
+                        }
 
+
+                        itemChanger.MarkItemAsPlaced(this.gameObject);
                         itemChanger.ResetIndex();
 
                         if (itemChanger.HasAvailableItems())
                         {
-                            itemChanger.ShowNextAvailableItem();
-                        }
-                        else
-                        {
-                            Debug.Log("🟣 No more items to show on the rod.");
+                            if (returnedItem == null)
+                            {
+                                itemChanger.ShowNextAvailableItem(); // ✅ Only show next if no item came back
+                            }
+                            else
+                            {
+                                Debug.Log($"🔄 Swap occurred — not showing new item.");
+                            }
                         }
 
                     }
@@ -173,6 +182,7 @@ if (isDragging)
         isDragging = false;
         hasDragged = false;
     }
+
 
 
 
