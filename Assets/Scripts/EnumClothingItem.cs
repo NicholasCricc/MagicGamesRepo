@@ -1,16 +1,19 @@
 using UnityEngine;
 
+public enum ClothingType
+{
+    Hat,
+    Glasses,
+    Scarf,
+    Shirt,
+    Pants,
+    Shoes,
+    FullBody,
+    Luggage
+}
+
 public class ClothingItem : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Tooltip("Assign the type of clothing this item represents.")]
+    public ClothingType clothingType;
 }

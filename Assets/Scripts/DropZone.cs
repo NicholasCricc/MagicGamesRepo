@@ -5,6 +5,8 @@ public class DropZone : MonoBehaviour
     public bool isOccupied = false;
     private GameObject currentItem;
     private ItemChanger itemChanger;
+    public ClothingType acceptedType;
+
 
     private void Start()
     {
@@ -124,4 +126,18 @@ public class DropZone : MonoBehaviour
             Debug.Log($"✅ DraggableItem script enabled for {item.name}");
         }
     }
+
+public ClothingType[] acceptedTypes;
+
+public bool AcceptsType(ClothingType type)
+{
+    foreach (ClothingType accepted in acceptedTypes)
+    {
+        if (accepted == type)
+            return true;
+    }
+    return false;
+}
+
+
 }

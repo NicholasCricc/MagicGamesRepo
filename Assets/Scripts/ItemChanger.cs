@@ -8,7 +8,6 @@ public class ItemChanger : MonoBehaviour
     private int currentIndex = -1;
     private GameObject currentRodItem;
 
-
     void Start()
     {
         if (itemList == null || itemList.Count == 0)
@@ -56,13 +55,6 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
-
-        if (attempts <= 0)
-        {
-            Debug.LogWarning("⚠️ No available items to cycle through.");
-            return;
-        }
-
         // ✅ Hide previous item before cycling
         if (previousItem != null && !IsItemInDropZone(previousItem))
         {
@@ -74,10 +66,8 @@ public class ItemChanger : MonoBehaviour
 
         GameObject nextItem = itemList[currentIndex];
 
-        // ✅ Ensure only the next item is active
         EnableItemInteraction(nextItem);
-        currentRodItem = nextItem; // ✅ Track the new rod item
-
+        currentRodItem = nextItem;
 
         DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
         if (draggable != null)
@@ -88,8 +78,6 @@ public class ItemChanger : MonoBehaviour
         Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
     }
 
-
-
     public void EnableItemInteraction(GameObject item)
     {
         if (item == null) return;
@@ -98,10 +86,8 @@ public class ItemChanger : MonoBehaviour
         Collider2D collider = item.GetComponent<Collider2D>();
         if (collider != null)
         {
-            
-            collider.enabled = false; // ✅ Temporarily disable collider
-            collider.enabled = true;  // ✅ Reactivate collider to force Unity to detect clicks
-
+            collider.enabled = false;
+            collider.enabled = true;
             Debug.Log($"✅ Collider refreshed and enabled for {item.name}");
         }
 
@@ -110,14 +96,10 @@ public class ItemChanger : MonoBehaviour
         {
             draggable.CacheStartPosition();
             draggable.enabled = false;
-            draggable.enabled = true; // ✅ Reactivate the script
-
+            draggable.enabled = true;
             Debug.Log($"✅ DraggableItem script refreshed for {item.name}");
         }
     }
-
-
-
 
     private bool IsItemInDropZone(GameObject item)
     {
@@ -141,10 +123,9 @@ public class ItemChanger : MonoBehaviour
     {
         if (itemList.Contains(placedItem))
         {
-            itemList.Remove(placedItem); // ✅ Stop cycling this item
+            itemList.Remove(placedItem);
             Debug.Log($"✅ {placedItem.name} marked as placed and removed from itemList.");
 
-            // ✅ Clear currentRodItem if it's the same item
             if (currentRodItem == placedItem)
             {
                 currentRodItem = null;
@@ -152,7 +133,6 @@ public class ItemChanger : MonoBehaviour
             }
         }
     }
-
 
     public bool HasAvailableItems()
     {
@@ -164,8 +144,7 @@ public class ItemChanger : MonoBehaviour
         currentIndex = -1;
     }
 
-
-    public void ShowNextAvailableItem()
+    public void ShowNextAvailableItem(ClothingType categoryType)
     {
         if (itemList == null || itemList.Count == 0)
         {
@@ -173,11 +152,14 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
-        // ✅ Check if all items are already placed
         bool allPlaced = true;
+        Debug.Log($"📋 Cycling for type: {categoryType}. Item count: {itemList.Count}");
+
         foreach (GameObject item in itemList)
         {
-            if (!IsItemInDropZone(item))
+            ClothingItem clothing = item.GetComponent<ClothingItem>();
+            Debug.Log($"🔍 {item.name} - Type: {(clothing != null ? clothing.clothingType.ToString() : "None")}, InDropZone: {IsItemInDropZone(item)}");
+            if (clothing != null && clothing.clothingType == categoryType && !IsItemInDropZone(item))
             {
                 allPlaced = false;
                 break;
@@ -186,7 +168,7 @@ public class ItemChanger : MonoBehaviour
 
         if (allPlaced)
         {
-            Debug.Log("🟣 All items are placed. Nothing to show.");
+            Debug.Log("🟣 All items of this type are placed. Nothing to show.");
             return;
         }
 
@@ -198,13 +180,19 @@ public class ItemChanger : MonoBehaviour
             currentIndex = (currentIndex + 1) % itemList.Count;
             attempts--;
 
-            if (currentIndex == startIndex)
+            ClothingItem clothing = itemList[currentIndex].GetComponent<ClothingItem>();
+            if (clothing != null && clothing.clothingType == categoryType && !IsItemInDropZone(itemList[currentIndex]))
             {
-                Debug.LogWarning("⚠️ No available items to cycle through. Stopping.");
+                break;
+            }
+
+            if (currentIndex == startIndex || attempts <= 0)
+            {
+                Debug.LogWarning("⚠️ No available items of this type to cycle through. Stopping.");
                 return;
             }
 
-        } while (IsItemInDropZone(itemList[currentIndex]) && attempts > 0);
+        } while (true);
 
         if (currentIndex < 0 || currentIndex >= itemList.Count)
         {
@@ -212,7 +200,6 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
-        // ✅ Always clean up the currentRodItem
         if (currentRodItem != null)
         {
             currentRodItem.SetActive(false);
@@ -250,7 +237,6 @@ public class ItemChanger : MonoBehaviour
     {
         if (currentRodItem != null && currentRodItem != item)
         {
-            // ✅ Only deactivate the previous rod item if it’s NOT placed
             if (!IsItemInDropZone(currentRodItem))
             {
                 currentRodItem.SetActive(false);
@@ -267,7 +253,4 @@ public class ItemChanger : MonoBehaviour
         currentRodItem = item;
         Debug.Log($"📌 New rod item set: {item.name}");
     }
-
-
-
 }

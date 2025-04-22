@@ -139,7 +139,17 @@ if (isDragging)
                         {
                             if (returnedItem == null)
                             {
-                                itemChanger.ShowNextAvailableItem(); // ✅ Only show next if no item came back
+                            ClothingItem clothing = GetComponent<ClothingItem>();
+                            if (clothing != null)
+                            {
+                                Debug.Log($"📦 {gameObject.name} is requesting ShowNextAvailableItem() for type: {clothing.clothingType}");
+                                itemChanger.ShowNextAvailableItem(clothing.clothingType);
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"⚠️ {gameObject.name} is missing ClothingItem component. Cannot cycle.");
+                            }
+
                             }
                             else
                             {
@@ -250,19 +260,22 @@ if (isDragging)
     }
 
 
-    void OnTriggerEnter2D(Collider2D collision)
+void OnTriggerEnter2D(Collider2D collision)
+{
+    DropZone zone = collision.GetComponent<DropZone>();
+    ClothingItem clothingItem = GetComponent<ClothingItem>();
+
+    if (zone != null && clothingItem != null)
     {
-        if ((collision.CompareTag("DropZone_Head") && gameObject.CompareTag("HatItem")) ||
-            (collision.CompareTag("DropZone_Head_GS") && gameObject.CompareTag("HatItemGS")) ||
-            (collision.CompareTag("DropZone_Body") && gameObject.CompareTag("ShirtItem")) ||
-            (collision.CompareTag("DropZone_Legs") && gameObject.CompareTag("PantsItem")) ||
-            (collision.CompareTag("DropZone_Feet") && gameObject.CompareTag("ShoesItem")))
+        if (zone.AcceptsType(clothingItem.clothingType))
         {
             isOverDropZone = true;
             dropZone = collision.transform;
             Debug.Log($"✅ {gameObject.name} entered {dropZone.name} (Valid Placement).");
         }
     }
+}
+
 
     public Vector3 GetStartingPosition()
     {

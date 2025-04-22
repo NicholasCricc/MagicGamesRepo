@@ -342,14 +342,6 @@ PrefabInstance:
       value: DropZone_Legs
       objectReference: {fileID: 0}
     - target: {fileID: 4179613600877417749, guid: 9a49cb57056dff247a045e5610bfae8f, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 8.514124
-      objectReference: {fileID: 0}
-    - target: {fileID: 4179613600877417749, guid: 9a49cb57056dff247a045e5610bfae8f, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.0812614
-      objectReference: {fileID: 0}
-    - target: {fileID: 4179613600877417749, guid: 9a49cb57056dff247a045e5610bfae8f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.1512
       objectReference: {fileID: 0}
@@ -388,6 +380,14 @@ PrefabInstance:
     - target: {fileID: 4179613600877417749, guid: 9a49cb57056dff247a045e5610bfae8f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6031255414614282651, guid: 9a49cb57056dff247a045e5610bfae8f, type: 3}
+      propertyPath: acceptedTypes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6031255414614282651, guid: 9a49cb57056dff247a045e5610bfae8f, type: 3}
+      propertyPath: 'acceptedTypes.Array.data[0]'
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -644,13 +644,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 39517244}
     m_Modifications:
-    - target: {fileID: 4465984174900013407, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 6.125
-      objectReference: {fileID: 0}
-    - target: {fileID: 4465984174900013407, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.4704685
+    - target: {fileID: 3098573332124784002, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
+      propertyPath: acceptedTypes.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4465984174900013407, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -695,38 +691,6 @@ PrefabInstance:
     - target: {fileID: 5303211856652405889, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
       propertyPath: m_Name
       value: DropZone_Head
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303211856652405889, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6456759671959169611, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6456759671959169611, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_Color.b
-      value: 0.21960786
-      objectReference: {fileID: 0}
-    - target: {fileID: 6456759671959169611, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_Color.g
-      value: 0.21960786
-      objectReference: {fileID: 0}
-    - target: {fileID: 6456759671959169611, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_Color.r
-      value: 0.21960786
-      objectReference: {fileID: 0}
-    - target: {fileID: 6456759671959169611, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6456759671959169611, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6456759671959169611, guid: 48c9279d7718d46449dbe9c7123b6e4c, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -485880947
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -881,6 +845,7 @@ GameObject:
   - component: {fileID: 530120913}
   - component: {fileID: 530120912}
   - component: {fileID: 530120911}
+  - component: {fileID: 530120916}
   m_Layer: 0
   m_Name: Green Bow
   m_TagString: HatItem
@@ -1097,6 +1062,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1221888098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &530120916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530120910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 0
 --- !u!1 &548557997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1197,6 +1175,7 @@ GameObject:
   - component: {fileID: 549637252}
   - component: {fileID: 549637251}
   - component: {fileID: 549637250}
+  - component: {fileID: 549637253}
   m_Layer: 0
   m_Name: Nina_Top
   m_TagString: ShirtItem
@@ -1743,6 +1722,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d26d01c1de0e44ba0e32ef19754488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &549637253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549637247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 3
 --- !u!1 &663249910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1756,6 +1748,7 @@ GameObject:
   - component: {fileID: 663249913}
   - component: {fileID: 663249912}
   - component: {fileID: 663249911}
+  - component: {fileID: 663249916}
   m_Layer: 0
   m_Name: Nina_Dungaree
   m_TagString: ShirtItem
@@ -2085,6 +2078,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1499717595}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &663249916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663249910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 6
 --- !u!1 &706028171
 GameObject:
   m_ObjectHideFlags: 0
@@ -2185,6 +2191,7 @@ GameObject:
   - component: {fileID: 730896907}
   - component: {fileID: 730896906}
   - component: {fileID: 730896905}
+  - component: {fileID: 730896909}
   m_Layer: 0
   m_Name: Green pants
   m_TagString: PantsItem
@@ -2424,6 +2431,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &730896909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730896903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 4
 --- !u!1 &768274418
 GameObject:
   m_ObjectHideFlags: 0
@@ -2437,6 +2457,7 @@ GameObject:
   - component: {fileID: 768274421}
   - component: {fileID: 768274420}
   - component: {fileID: 768274419}
+  - component: {fileID: 768274424}
   m_Layer: 0
   m_Name: Ballerina shoes
   m_TagString: ShoesItem
@@ -2670,6 +2691,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 314984779}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &768274424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768274418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 5
 --- !u!4 &802173838 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6404570012039643730, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
@@ -2686,26 +2720,6 @@ PrefabInstance:
     - target: {fileID: 2424343356685310211, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
       propertyPath: m_Name
       value: DropZone_Feet
-      objectReference: {fileID: 0}
-    - target: {fileID: 2424343356685310211, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3916215877669689756, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3916215877669689756, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3916215877669689756, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -485880947
-      objectReference: {fileID: 0}
-    - target: {fileID: 6404570012039643730, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5.36
       objectReference: {fileID: 0}
     - target: {fileID: 6404570012039643730, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2746,6 +2760,14 @@ PrefabInstance:
     - target: {fileID: 6404570012039643730, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8788119797154838347, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
+      propertyPath: acceptedTypes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8788119797154838347, guid: ec645d9c3093bff4e966a3f0a95018ac, type: 3}
+      propertyPath: 'acceptedTypes.Array.data[0]'
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2807,6 +2829,7 @@ GameObject:
   - component: {fileID: 995899388}
   - component: {fileID: 995899387}
   - component: {fileID: 995899386}
+  - component: {fileID: 995899389}
   m_Layer: 0
   m_Name: Nina_Boots
   m_TagString: ShoesItem
@@ -3028,6 +3051,19 @@ PolygonCollider2D:
       - {x: 2.2549999, y: -6}
       - {x: 2.345, y: -5.95}
   m_UseDelaunayMesh: 0
+--- !u!114 &995899389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 995899383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 5
 --- !u!1 &1174871262
 GameObject:
   m_ObjectHideFlags: 0
@@ -3263,6 +3299,7 @@ GameObject:
   - component: {fileID: 1438273260}
   - component: {fileID: 1438273259}
   - component: {fileID: 1438273258}
+  - component: {fileID: 1438273261}
   m_Layer: 0
   m_Name: Nina_Sneakers
   m_TagString: ShoesItem
@@ -3484,6 +3521,19 @@ PolygonCollider2D:
       - {x: 2.185, y: -6.0699997}
       - {x: 2.305, y: -6.02}
   m_UseDelaunayMesh: 0
+--- !u!114 &1438273261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438273255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 5
 --- !u!1 &1476821661
 GameObject:
   m_ObjectHideFlags: 0
@@ -3497,6 +3547,7 @@ GameObject:
   - component: {fileID: 1476821664}
   - component: {fileID: 1476821663}
   - component: {fileID: 1476821662}
+  - component: {fileID: 1476821667}
   m_Layer: 0
   m_Name: Headband
   m_TagString: HatItem
@@ -3770,6 +3821,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 240036978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1476821667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476821661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 0
 --- !u!1 &1499717594
 GameObject:
   m_ObjectHideFlags: 0
@@ -3834,6 +3898,7 @@ GameObject:
   - component: {fileID: 1546995087}
   - component: {fileID: 1546995086}
   - component: {fileID: 1546995085}
+  - component: {fileID: 1546995090}
   m_Layer: 0
   m_Name: Glasses
   m_TagString: HatItemGS
@@ -4252,6 +4317,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 240036978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1546995090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546995084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 1
 --- !u!1001 &1557209647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4260,13 +4338,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 39517244}
     m_Modifications:
-    - target: {fileID: 4465984174900013407, guid: c0c80801627c8cd45b8fbab9a6d62b87, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 6.1835027
+    - target: {fileID: 3098573332124784002, guid: c0c80801627c8cd45b8fbab9a6d62b87, type: 3}
+      propertyPath: acceptedTypes.Array.size
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4465984174900013407, guid: c0c80801627c8cd45b8fbab9a6d62b87, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.614872
+    - target: {fileID: 3098573332124784002, guid: c0c80801627c8cd45b8fbab9a6d62b87, type: 3}
+      propertyPath: 'acceptedTypes.Array.data[0]'
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4465984174900013407, guid: c0c80801627c8cd45b8fbab9a6d62b87, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4312,10 +4390,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DropZone_Head_GS
       objectReference: {fileID: 0}
-    - target: {fileID: 5303211856652405889, guid: c0c80801627c8cd45b8fbab9a6d62b87, type: 3}
-      propertyPath: m_TagString
-      value: DropZone_Head_GS
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4338,25 +4412,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: DropZone_Body
       objectReference: {fileID: 0}
-    - target: {fileID: 3403045194232346471, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4059672296943758281, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
       propertyPath: m_LocalScale.x
-      value: 10.626874
-      objectReference: {fileID: 0}
-    - target: {fileID: 4059672296943758281, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.8611062
-      objectReference: {fileID: 0}
-    - target: {fileID: 4059672296943758281, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 3.0914543
+      value: 8.667278
       objectReference: {fileID: 0}
     - target: {fileID: 4059672296943758281, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.07
+      value: -0.91
       objectReference: {fileID: 0}
     - target: {fileID: 4059672296943758281, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4393,22 +4455,6 @@ PrefabInstance:
     - target: {fileID: 4059672296943758281, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7192941654073480195, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7192941654073480195, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7192941654073480195, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7192941654073480195, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -485880947
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4515,6 +4561,7 @@ GameObject:
   - component: {fileID: 1967233321}
   - component: {fileID: 1967233320}
   - component: {fileID: 1967233319}
+  - component: {fileID: 1967233322}
   m_Layer: 0
   m_Name: Nina_Tiara
   m_TagString: HatItem
@@ -4775,6 +4822,19 @@ PolygonCollider2D:
       - {x: -1.525, y: 3.31}
       - {x: -1.2149999, y: 3.35}
   m_UseDelaunayMesh: 0
+--- !u!114 &1967233322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967233316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 0
 --- !u!1 &2054930248
 GameObject:
   m_ObjectHideFlags: 0
@@ -4788,6 +4848,7 @@ GameObject:
   - component: {fileID: 2054930253}
   - component: {fileID: 2054930252}
   - component: {fileID: 2054930251}
+  - component: {fileID: 2054930254}
   m_Layer: 0
   m_Name: Nina_Hat
   m_TagString: HatItem
@@ -5066,6 +5127,19 @@ PolygonCollider2D:
       - {x: 3.7949998, y: 1.76}
       - {x: 3.915, y: 1.79}
   m_UseDelaunayMesh: 0
+--- !u!114 &2054930254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054930248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothingType: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
