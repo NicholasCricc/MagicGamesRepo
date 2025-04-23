@@ -124,40 +124,31 @@ if (isDragging)
                     StartCoroutine(DisableColliderAfterDelay());
 
                     if (itemChanger != null)
-                    {
-                        if (itemChanger.CompareCurrentRodItem(this.gameObject))
-                        {
-                            itemChanger.ClearCurrentRodItem();
-                            Debug.Log($"🧼 {gameObject.name} was on rod — now placed, so untracked.");
-                        }
+if (itemChanger != null)
+{
+    if (itemChanger.CompareCurrentRodItem(this.gameObject))
+    {
+        itemChanger.ClearCurrentRodItem();
+        Debug.Log($"🧼 {gameObject.name} was on rod — now placed, so untracked.");
+    }
 
+    itemChanger.MarkItemAsPlaced(this.gameObject);
+    itemChanger.ResetIndex();
 
-                        itemChanger.MarkItemAsPlaced(this.gameObject);
-                        itemChanger.ResetIndex();
+    if (itemChanger.HasAvailableItems())
+    {
+        if (returnedItem == null)
+        {
+            Debug.Log($"📦 {gameObject.name} is requesting ShowNextAvailableItem() (cross-type)");
+            itemChanger.ShowNextAvailableItem();
+        }
+        else
+        {
+            Debug.Log($"🔄 Swap occurred — not showing new item.");
+        }
+    }
+}
 
-                        if (itemChanger.HasAvailableItems())
-                        {
-                            if (returnedItem == null)
-                            {
-                            ClothingItem clothing = GetComponent<ClothingItem>();
-                            if (clothing != null)
-                            {
-                                Debug.Log($"📦 {gameObject.name} is requesting ShowNextAvailableItem() for type: {clothing.clothingType}");
-                                itemChanger.ShowNextAvailableItem(clothing.clothingType);
-                            }
-                            else
-                            {
-                                Debug.LogWarning($"⚠️ {gameObject.name} is missing ClothingItem component. Cannot cycle.");
-                            }
-
-                            }
-                            else
-                            {
-                                Debug.Log($"🔄 Swap occurred — not showing new item.");
-                            }
-                        }
-
-                    }
                 }
                 else
                 {

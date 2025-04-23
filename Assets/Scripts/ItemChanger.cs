@@ -55,13 +55,11 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
-        // ✅ Hide previous item before cycling
         if (previousItem != null && !IsItemInDropZone(previousItem))
         {
             previousItem.SetActive(false);
             previousItem.GetComponent<Collider2D>().enabled = false;
             previousItem.GetComponent<DraggableItem>().enabled = false;
-            Debug.Log($"🔻 Hiding {previousItem.name} and DISABLING it.");
         }
 
         GameObject nextItem = itemList[currentIndex];
@@ -88,7 +86,6 @@ public class ItemChanger : MonoBehaviour
         {
             collider.enabled = false;
             collider.enabled = true;
-            Debug.Log($"✅ Collider refreshed and enabled for {item.name}");
         }
 
         DraggableItem draggable = item.GetComponent<DraggableItem>();
@@ -97,7 +94,6 @@ public class ItemChanger : MonoBehaviour
             draggable.CacheStartPosition();
             draggable.enabled = false;
             draggable.enabled = true;
-            Debug.Log($"✅ DraggableItem script refreshed for {item.name}");
         }
     }
 
@@ -121,17 +117,13 @@ public class ItemChanger : MonoBehaviour
 
     public void MarkItemAsPlaced(GameObject placedItem)
     {
-        if (itemList.Contains(placedItem))
-        {
-            itemList.Remove(placedItem);
-            Debug.Log($"✅ {placedItem.name} marked as placed and removed from itemList.");
+ClothingItem placedClothing = placedItem.GetComponent<ClothingItem>();
+if (itemList.Contains(placedItem) && placedClothing != null)
+{
+    itemList.Remove(placedItem);
+    Debug.Log($"✅ {placedItem.name} marked as placed and removed from itemList.");
+}
 
-            if (currentRodItem == placedItem)
-            {
-                currentRodItem = null;
-                Debug.Log($"🧹 {placedItem.name} was currentRodItem — cleared reference.");
-            }
-        }
     }
 
     public bool HasAvailableItems()
@@ -144,83 +136,9 @@ public class ItemChanger : MonoBehaviour
         currentIndex = -1;
     }
 
-    public void ShowNextAvailableItem(ClothingType categoryType)
+    public void ShowNextAvailableItem()
     {
-        if (itemList == null || itemList.Count == 0)
-        {
-            Debug.LogError("❌ itemList is empty in ShowNextAvailableItem()");
-            return;
-        }
-
-        bool allPlaced = true;
-        Debug.Log($"📋 Cycling for type: {categoryType}. Item count: {itemList.Count}");
-
-        foreach (GameObject item in itemList)
-        {
-            ClothingItem clothing = item.GetComponent<ClothingItem>();
-            Debug.Log($"🔍 {item.name} - Type: {(clothing != null ? clothing.clothingType.ToString() : "None")}, InDropZone: {IsItemInDropZone(item)}");
-            if (clothing != null && clothing.clothingType == categoryType && !IsItemInDropZone(item))
-            {
-                allPlaced = false;
-                break;
-            }
-        }
-
-        if (allPlaced)
-        {
-            Debug.Log("🟣 All items of this type are placed. Nothing to show.");
-            return;
-        }
-
-        int attempts = itemList.Count;
-        int startIndex = currentIndex;
-
-        do
-        {
-            currentIndex = (currentIndex + 1) % itemList.Count;
-            attempts--;
-
-            ClothingItem clothing = itemList[currentIndex].GetComponent<ClothingItem>();
-            if (clothing != null && clothing.clothingType == categoryType && !IsItemInDropZone(itemList[currentIndex]))
-            {
-                break;
-            }
-
-            if (currentIndex == startIndex || attempts <= 0)
-            {
-                Debug.LogWarning("⚠️ No available items of this type to cycle through. Stopping.");
-                return;
-            }
-
-        } while (true);
-
-        if (currentIndex < 0 || currentIndex >= itemList.Count)
-        {
-            Debug.LogError("❌ currentIndex is out of range in ShowNextAvailableItem()");
-            return;
-        }
-
-        if (currentRodItem != null)
-        {
-            currentRodItem.SetActive(false);
-            currentRodItem.GetComponent<Collider2D>().enabled = false;
-            currentRodItem.GetComponent<DraggableItem>().enabled = false;
-            Debug.Log($"🔻 Cleaned up lingering rod item: {currentRodItem.name}");
-            currentRodItem = null;
-        }
-
-        GameObject nextItem = itemList[currentIndex];
-
-        EnableItemInteraction(nextItem);
-        currentRodItem = nextItem;
-
-        DraggableItem draggable = nextItem.GetComponent<DraggableItem>();
-        if (draggable != null)
-        {
-            nextItem.transform.position = draggable.GetStartingPosition();
-        }
-
-        Debug.Log($"🔹 {nextItem.name} is now active at {nextItem.transform.position}");
+        ChangeToNextItem();
     }
 
     public bool CompareCurrentRodItem(GameObject item)
@@ -233,24 +151,25 @@ public class ItemChanger : MonoBehaviour
         currentRodItem = null;
     }
 
-    public void SetCurrentRodItem(GameObject item)
+public void SetCurrentRodItem(GameObject item)
+{
+    if (currentRodItem != null && currentRodItem != item)
     {
-        if (currentRodItem != null && currentRodItem != item)
+        if (!IsItemInDropZone(currentRodItem))
         {
-            if (!IsItemInDropZone(currentRodItem))
-            {
-                currentRodItem.SetActive(false);
-                currentRodItem.GetComponent<Collider2D>().enabled = false;
-                currentRodItem.GetComponent<DraggableItem>().enabled = false;
-                Debug.Log($"🧹 Previous rod item {currentRodItem.name} deactivated.");
-            }
-            else
-            {
-                Debug.Log($"⚠️ {currentRodItem.name} is placed — not deactivating.");
-            }
-        }
+            currentRodItem.SetActive(false);
+            Collider2D col = currentRodItem.GetComponent<Collider2D>();
+            if (col) col.enabled = false;
 
-        currentRodItem = item;
-        Debug.Log($"📌 New rod item set: {item.name}");
+            DraggableItem drag = currentRodItem.GetComponent<DraggableItem>();
+            if (drag) drag.enabled = false;
+
+            Debug.Log($"🧹 Previous rod item {currentRodItem.name} fully disabled.");
+        }
     }
+
+    currentRodItem = item;
+    Debug.Log($"📌 New rod item set: {item.name}");
+}
+
 }
