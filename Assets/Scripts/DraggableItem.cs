@@ -95,6 +95,33 @@ if (isDragging)
         pressDuration = Time.time - pressStartTime;
         Debug.Log($"🔴 {gameObject.name} Released - isOverDropZone: {isOverDropZone}, DropZone: {(dropZone != null ? dropZone.name : "None")}");
 
+        ClothingItem myClothing = GetComponent<ClothingItem>();
+        if (myClothing == null) return;
+
+        // 🧼 HARD GROUP CLEANUP
+        Transform parent = transform.parent;
+        foreach (Transform sibling in parent)
+        {
+            if (sibling.gameObject == this.gameObject) continue;
+
+            ClothingItem c = sibling.GetComponent<ClothingItem>();
+            if (c != null && c.clothingType == myClothing.clothingType && sibling.gameObject.activeSelf)
+            {
+                sibling.gameObject.SetActive(false);
+
+                var col = sibling.GetComponent<Collider2D>();
+                if (col != null) col.enabled = false;
+
+                var drag = sibling.GetComponent<DraggableItem>();
+                if (drag != null) drag.enabled = false;
+
+                var sr = sibling.GetComponent<SpriteRenderer>();
+                if (sr != null) sr.sortingOrder = 2;
+
+                Debug.Log($"🧹 [Group Cleanup] Deactivated {sibling.name} of type {c.clothingType}");
+            }
+        }
+
         if (hasDragged)
         {
             if (isOverDropZone && dropZone != null)
@@ -128,8 +155,9 @@ if (itemChanger != null)
 {
     if (itemChanger.CompareCurrentRodItem(this.gameObject))
     {
-        itemChanger.ClearCurrentRodItem();
-        Debug.Log($"🧼 {gameObject.name} was on rod — now placed, so untracked.");
+                                itemChanger.ClearCurrentRodItem(this.gameObject);
+
+                                Debug.Log($"🧼 {gameObject.name} was on rod — now placed, so untracked.");
     }
 
     itemChanger.MarkItemAsPlaced(this.gameObject);
@@ -175,7 +203,16 @@ if (itemChanger != null)
                 isOverDropZone = false;
                 dropZone = null;
 
+                // Clean up this item if it's still active
+                if (itemChanger.CompareCurrentRodItem(this.gameObject))
+                {
+                    itemChanger.ClearCurrentRodItem(this.gameObject);
+                    gameObject.SetActive(false); // ✅ Disable the clicked item manually
+                    Debug.Log($"🧼 {gameObject.name} was manually clicked and deactivated before cycling.");
+                }
+
                 itemChanger.ChangeToNextItem();
+
             }
         }
 

@@ -5,7 +5,7 @@ public class DropZone : MonoBehaviour
     public bool isOccupied = false;
     private GameObject currentItem;
     private ItemChanger itemChanger;
-    public ClothingType acceptedType;
+    public ClothingType[] acceptedTypes;
 
 
     private void Start()
@@ -54,8 +54,10 @@ public class DropZone : MonoBehaviour
                 DraggableItem swappedDraggable = currentItem.GetComponent<DraggableItem>();
                 if (swappedDraggable != null)
                 {
-                    swappedDraggable.ResetDropZoneState(); // ✅ New function to reset drop zone state
+                    swappedDraggable.ResetDropZoneState(); // ✅ MUST come before reset
+                    ResetItemForCycling(currentItem);
                 }
+
 
                 ResetItemForCycling(currentItem);
                 Debug.Log($"🔄 {currentItem.name} moved back to {returnPosition} and is now ready for cycling.");
@@ -91,22 +93,39 @@ public class DropZone : MonoBehaviour
         // ✅ Re-register the item with ItemChanger
         if (itemChanger != null)
         {
-            if (!itemChanger.itemList.Contains(item))
+            ClothingItem clothing = item.GetComponent<ClothingItem>();
+            if (clothing != null)
             {
+                // Always ensure there's only one of this type in the list
+                itemChanger.itemList.RemoveAll(i =>
+                {
+                    var c = i.GetComponent<ClothingItem>();
+                    return c != null && c.clothingType == clothing.clothingType;
+                });
+
                 itemChanger.itemList.Add(item);
-                Debug.Log($"✅ {item.name} re-added to itemList.");
+                Debug.Log("📋 Current itemList after adding:");
+                foreach (GameObject go in itemChanger.itemList)
+                {
+                    var ci = go.GetComponent<ClothingItem>();
+                    if (ci != null)
+                        Debug.Log($"   - {go.name} (Type: {ci.clothingType}) | Active: {go.activeSelf}");
+                }
+
+                Debug.Log($"✅ {item.name} re-added to itemList for category {clothing.clothingType}");
             }
+
 
             itemChanger.ResetIndex(); // force update to avoid out-of-sync cycling
 
             // ✅ Track this as the current rod item and hide previous one if necessary
             itemChanger.SetCurrentRodItem(item);
+            itemChanger.DeactivateConflictingClothingTypes(clothing.clothingType);
+
         }
 
         Debug.Log($"✅ {item.name} is now fully reset and ready for interaction.");
     }
-
-
 
     public void EnableItemInteraction(GameObject item)
     {
@@ -127,9 +146,9 @@ public class DropZone : MonoBehaviour
         }
     }
 
-public ClothingType[] acceptedTypes;
 
-public bool AcceptsType(ClothingType type)
+
+    public bool AcceptsType(ClothingType type)
 {
     foreach (ClothingType accepted in acceptedTypes)
     {
@@ -139,5 +158,10 @@ public bool AcceptsType(ClothingType type)
     return false;
 }
 
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, 0.5f);
+    }
 
 }
