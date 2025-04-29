@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class DraggableItem : MonoBehaviour
 {
     private Vector3 dragOffset;
-
+    public Transform originalParent;
     private Vector3 startPosition;
     private bool isDragging = false;
     private bool isOverDropZone = false;
@@ -17,213 +18,265 @@ public class DraggableItem : MonoBehaviour
     private float shortPressThreshold = 0.4f;
     private float longPressThreshold = 0.3f;
     private float dragDistanceThreshold = 0.02f;
+    private bool swappedItemDuringPlacement = false;
+
 
     private Vector3 mouseStartPosition;
-    private ItemChanger itemChanger;
+    public ItemChanger itemChanger;
+    [SerializeField] private ItemChanger hatsChanger;   // drag your Hats rod here in the Inspector
 
     void Start()
     {
+        // 1) Cache original parent & transforms
+        originalParent = transform.parent;
         startPosition = transform.position;
-
-        itemChanger = GetComponentInParent<ItemChanger>();
-
         originalScale = transform.localScale;
+        itemChanger = GetComponentInParent<ItemChanger>();
+        Debug.Log($"🔵 {name} Initialized – Start Pos: {startPosition}");
 
-        Debug.Log($"🔵 {gameObject.name} Initialized - Start Position: {startPosition}");
-    }
-
-void OnMouseDown()
-{
-    pressStartTime = Time.time;
-    mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    hasDragged = false;
-    isDragging = false;
-
-    // ✅ Store offset between mouse and object pivot
-    Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    dragOffset = transform.position - new Vector3(mouseWorld.x, mouseWorld.y, transform.position.z);
-
-    // ✅ Raise sorting order for all visible parts (e.g. both shoes)
-    SetAllChildSortingOrder(5);
-
-    Debug.Log($"🟡 {gameObject.name} Clicked - Start Dragging.");
-}
-
-
-    void OnMouseDrag()
-    {
-        Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        float distance = Vector3.Distance(mouseStartPosition, currentMousePosition);
-
-        if (!hasDragged && (distance > dragDistanceThreshold || Time.time - pressStartTime >= longPressThreshold))
+        // 2) Ensure hatsChanger is set (Inspector override or find by name)
+        if (hatsChanger == null)
         {
-            hasDragged = true;
-            isDragging = true;
-            isOverDropZone = false; // ✅ Ensure it doesn't stay true when dragging out of drop zone
+            var hatsGO = GameObject.Find("Hats");
+            if (hatsGO != null)
+                hatsChanger = hatsGO.GetComponent<ItemChanger>();
 
-            Debug.Log($"🟠 {gameObject.name} is being dragged.");
-
-            // ✅ Temporarily disable collision with the item in the drop zone
-            IgnoreDropZoneCollisions(true);
+            if (hatsChanger == null)
+                Debug.LogError($"[DraggableItem] hatsChanger not assigned and no GameObject named 'Hats' found for {name}");
         }
 
-if (isDragging)
-{
-    currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    transform.position = new Vector3(
-        currentMousePosition.x + dragOffset.x,
-        currentMousePosition.y + dragOffset.y,
-        startPosition.z
-    );
-
-    // ✅ Bring to front on drag (safe across single/clothing/multisprite items)
-    SpriteRenderer sr = GetComponent<SpriteRenderer>();
-    if (sr == null)
-        sr = GetComponentInChildren<SpriteRenderer>();
-
-    if (sr != null)
-    {
-        sr.sortingOrder = 5;
-    }
-}
-
-    }
-
-
-    void OnMouseUp()
-    {
-        pressDuration = Time.time - pressStartTime;
-        Debug.Log($"🔴 {gameObject.name} Released - isOverDropZone: {isOverDropZone}, DropZone: {(dropZone != null ? dropZone.name : "None")}");
-
-        ClothingItem myClothing = GetComponent<ClothingItem>();
-        if (myClothing == null) return;
-
-        // 🧼 HARD GROUP CLEANUP
-        Transform parent = transform.parent;
-        foreach (Transform sibling in parent)
+        // 3) Reroute any Hat-typed item under "Headwear" into the real Hats rod
+        var cloth = GetComponent<ClothingItem>();
+        if (hatsChanger != null
+            && cloth != null
+            && cloth.clothingType == ClothingType.Hat
+            && transform.parent != null
+            && transform.parent.name.Contains("Headwear"))
         {
-            if (sibling.gameObject == this.gameObject) continue;
+            // a) Physically move it under the Hats container (preserve world position)
+            transform.SetParent(hatsChanger.transform, worldPositionStays: true);
 
-            ClothingItem c = sibling.GetComponent<ClothingItem>();
-            if (c != null && c.clothingType == myClothing.clothingType && sibling.gameObject.activeSelf)
+            // b) Update runtime pointers so all rod logic uses the Hats changer
+            originalParent = hatsChanger.transform;
+            cloth.parentChanger = hatsChanger;
+            itemChanger = hatsChanger;
+
+            // c) Add it to the Hats rod's itemList if it's not already there
+            if (!hatsChanger.itemList.Contains(gameObject))
+                hatsChanger.itemList.Add(gameObject);
+
+            Debug.Log($"🔀 {name} re-parented into {hatsChanger.gameObject.name} rod at Start()");
+        }
+
+    }
+        void OnMouseDown()
+        {
+            pressStartTime = Time.time;
+            mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            hasDragged = false;
+            isDragging = false;
+
+            // ✅ Store offset between mouse and object pivot
+            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            dragOffset = transform.position - new Vector3(mouseWorld.x, mouseWorld.y, transform.position.z);
+
+            // ✅ Raise sorting order for all visible parts (e.g. both shoes)
+            SetAllChildSortingOrder(5);
+
+            Debug.Log($"🟡 {gameObject.name} Clicked - Start Dragging.");
+        }
+
+
+        void OnMouseDrag()
+        {
+            Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            float distance = Vector3.Distance(mouseStartPosition, currentMousePosition);
+
+            if (!hasDragged && (distance > dragDistanceThreshold || Time.time - pressStartTime >= longPressThreshold))
             {
-                sibling.gameObject.SetActive(false);
+                hasDragged = true;
+                isDragging = true;
+                isOverDropZone = false; // ✅ Ensure it doesn't stay true when dragging out of drop zone
 
-                var col = sibling.GetComponent<Collider2D>();
-                if (col != null) col.enabled = false;
+                Debug.Log($"🟠 {gameObject.name} is being dragged.");
 
-                var drag = sibling.GetComponent<DraggableItem>();
-                if (drag != null) drag.enabled = false;
-
-                var sr = sibling.GetComponent<SpriteRenderer>();
-                if (sr != null) sr.sortingOrder = 2;
-
-                Debug.Log($"🧹 [Group Cleanup] Deactivated {sibling.name} of type {c.clothingType}");
+                // ✅ Temporarily disable collision with the item in the drop zone
+                IgnoreDropZoneCollisions(true);
             }
+
+            if (isDragging)
+            {
+                currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                transform.position = new Vector3(
+                    currentMousePosition.x + dragOffset.x,
+                    currentMousePosition.y + dragOffset.y,
+                    startPosition.z
+                );
+
+                // ✅ Bring to front on drag (safe across single/clothing/multisprite items)
+                SpriteRenderer sr = GetComponent<SpriteRenderer>();
+                if (sr == null)
+                    sr = GetComponentInChildren<SpriteRenderer>();
+
+                if (sr != null)
+                {
+                    sr.sortingOrder = 5;
+                }
+            }
+
         }
 
-        if (hasDragged)
+
+        void OnMouseUp()
         {
-            if (isOverDropZone && dropZone != null)
+            pressDuration = Time.time - pressStartTime;
+            Debug.Log($"🔴 {gameObject.name} Released - isOverDropZone: {isOverDropZone}, DropZone: {(dropZone != null ? dropZone.name : "None")}");
+
+            swappedItemDuringPlacement = false;
+            var myClothing = GetComponent<ClothingItem>();
+            if (myClothing == null) return;
+
+            Transform parent = transform.parent;
+            bool wasPlacedSuccessfully = false;
+
+            if (hasDragged)
             {
-                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                if (dropZone.GetComponent<Collider2D>().OverlapPoint(mousePosition))
+                if (isOverDropZone && dropZone != null)
                 {
-                    DropZone dropZoneScript = dropZone.GetComponent<DropZone>();
+                    // 1) Place and get any old item
+                    var dz = dropZone.GetComponent<DropZone>();
+                    GameObject old = dz.PlaceItem(this.gameObject);
+                    wasPlacedSuccessfully = true;
 
-                    if (dropZoneScript == null)
+                    // 2) Hide returned accessory
+                    if (old != null)
                     {
-                        Debug.LogError($"❌ DropZone script missing on {dropZone.name}");
-                        transform.position = startPosition;
-                        return;
+                        var oc = old.GetComponent<ClothingItem>();
+                        if (oc != null && oc.parentChanger == null)
+                        {
+                            old.SetActive(false);
+                            Debug.Log($"🛑 {old.name} swapped out and hidden");
+                        }
                     }
 
-                    GameObject returnedItem = dropZoneScript.PlaceItem(this.gameObject);
-
-
+                    // 3) Snap this one in
                     transform.position = Vector3.zero;
                     transform.localScale = Vector3.one;
-
                     Debug.Log($"✅ {gameObject.name} placed in {dropZone.name}");
-
-                    // ✅ Disable collider only — keep visible and enabled
                     StartCoroutine(DisableColliderAfterDelay());
 
+                    // 4) Mark & remove this from rod if needed
                     if (itemChanger != null)
-if (itemChanger != null)
-{
-    if (itemChanger.CompareCurrentRodItem(this.gameObject))
-    {
-                                itemChanger.ClearCurrentRodItem(this.gameObject);
+                    {
+                        if (itemChanger.CompareCurrentRodItem(this.gameObject))
+                        {
+                            itemChanger.ClearCurrentRodItem(this.gameObject);
+                            Debug.Log($"🧼 {gameObject.name} untracked from rod");
+                        }
 
-                                Debug.Log($"🧼 {gameObject.name} was on rod — now placed, so untracked.");
-    }
+                        itemChanger.MarkItemAsPlaced(this.gameObject);
+                        if (itemChanger.itemList.Contains(this.gameObject))
+                        {
+                            itemChanger.itemList.Remove(this.gameObject);
+                            Debug.Log($"🗑 {gameObject.name} removed from rod list");
+                        }
+                    }
 
-    itemChanger.MarkItemAsPlaced(this.gameObject);
-    itemChanger.ResetIndex();
+                    // 5) Build a quick lookup for "what is still in the rod"
+                    HashSet<GameObject> rodSet = null;
+                    if (itemChanger != null)
+                        rodSet = new HashSet<GameObject>(itemChanger.itemList);
 
-    if (itemChanger.HasAvailableItems())
-    {
-        if (returnedItem == null)
-        {
-            Debug.Log($"📦 {gameObject.name} is requesting ShowNextAvailableItem() (cross-type)");
-            itemChanger.ShowNextAvailableItem();
-        }
-        else
-        {
-            Debug.Log($"🔄 Swap occurred — not showing new item.");
-        }
-    }
-}
+                    // 6) CLEANUP: disable any **rod** siblings that remain and aren't placed
+                    if (wasPlacedSuccessfully && parent != null && rodSet != null)
+                    {
+                        foreach (Transform sib in parent)
+                        {
+                            var c = sib.GetComponent<ClothingItem>();
+                            if (c != null
+                                && rodSet.Contains(sib.gameObject)
+                                && sib.gameObject.activeSelf
+                                && !c.isPlaced)
+                            {
+                                sib.gameObject.SetActive(false);
+                                if (sib.TryGetComponent<Collider2D>(out var col)) col.enabled = false;
+                                if (sib.TryGetComponent<DraggableItem>(out var d)) d.enabled = false;
+                                if (sib.TryGetComponent<SpriteRenderer>(out var sr)) sr.sortingOrder = 2;
+                                Debug.Log($"🧹 [Rod Cleanup] Disabled {sib.name}");
+                            }
+                        }
 
+                        // 7) ACTIVATE exactly one next rod item
+                        foreach (Transform sib in parent)
+                        {
+                            var c = sib.GetComponent<ClothingItem>();
+                            if (c != null
+                                && rodSet.Contains(sib.gameObject)
+                                && !sib.gameObject.activeSelf
+                                && !c.isPlaced)
+                            {
+                                sib.gameObject.SetActive(true);
+                                if (sib.TryGetComponent<Collider2D>(out var col)) col.enabled = true;
+                                if (sib.TryGetComponent<DraggableItem>(out var d)) d.enabled = true;
+                                if (sib.TryGetComponent<SpriteRenderer>(out var sr)) sr.sortingOrder = 3;
+                                Debug.Log($"✅ [Next Rod] Activated {sib.name}");
+
+                                // re-add to list (if missing) and set index
+                                if (!itemChanger.itemList.Contains(sib.gameObject))
+                                {
+                                    itemChanger.itemList.Add(sib.gameObject);
+                                    Debug.Log($"📋 Added {sib.name} to rod list");
+                                }
+                                int newIndex = itemChanger.itemList.IndexOf(sib.gameObject);
+                                if (newIndex >= 0)
+                                {
+                                    itemChanger.SetCurrentIndex(newIndex);
+                                    Debug.Log($"🎯 CurrentIndex = {newIndex} for {sib.name}");
+                                }
+                                break;
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    Debug.Log($"❌ {gameObject.name} dropped outside valid drop zone, returning to start.");
+                    // dropped outside → return to start
+                    Debug.Log($"❌ {gameObject.name} dropped outside, returning");
                     transform.position = startPosition;
                     transform.localScale = originalScale;
                     EnableInteraction();
                 }
             }
-            else
+            else if (pressDuration < shortPressThreshold)
             {
-                Debug.Log($"❌ {gameObject.name} dropped outside any valid drop zone, returning to start.");
-                transform.position = startPosition;
-                transform.localScale = originalScale;
-                EnableInteraction();
-            }
-        }
-        else if (pressDuration < shortPressThreshold)
-        {
-            if (itemChanger != null)
-            {
-                Debug.Log($"🔁 {gameObject.name} clicked - Changing to next item");
-
-                isOverDropZone = false;
-                dropZone = null;
-
-                // Clean up this item if it's still active
-                if (itemChanger.CompareCurrentRodItem(this.gameObject))
+                // click → cycle
+                if (itemChanger != null)
                 {
-                    itemChanger.ClearCurrentRodItem(this.gameObject);
-                    gameObject.SetActive(false); // ✅ Disable the clicked item manually
-                    Debug.Log($"🧼 {gameObject.name} was manually clicked and deactivated before cycling.");
+                    Debug.Log($"🔁 {gameObject.name} clicked - cycle");
+                    isOverDropZone = false;
+                    dropZone = null;
+
+                    if (itemChanger.CompareCurrentRodItem(this.gameObject))
+                    {
+                        itemChanger.ClearCurrentRodItem(this.gameObject);
+                        itemChanger.MarkItemAsPlaced(this.gameObject);
+                        if (itemChanger.itemList.Contains(this.gameObject))
+                        {
+                            itemChanger.itemList.Remove(this.gameObject);
+                            Debug.Log($"🗑 {gameObject.name} removed after click");
+                        }
+                        gameObject.SetActive(false);
+                        Debug.Log($"🧹 {gameObject.name} deactivated post-click");
+                    }
+                    itemChanger.ChangeToNextItem();
                 }
-
-                itemChanger.ChangeToNextItem();
-
             }
+
+            // reset visuals & drag state
+            SetAllChildSortingOrder(2);
+            isDragging = false;
+            hasDragged = false;
         }
-
-        SetAllChildSortingOrder(2);
-        isDragging = false;
-        hasDragged = false;
-    }
-
-
-
-
 
 
     private void IgnoreDropZoneCollisions(bool ignore)
@@ -263,11 +316,11 @@ if (itemChanger != null)
 
 
     public void ResetDropZoneState()
-{
-    isOverDropZone = false;
-    dropZone = null;
-    Debug.Log($"♻️ {gameObject.name} drop zone state reset.");
-}
+    {
+        isOverDropZone = false;
+        dropZone = null;
+        Debug.Log($"♻️ {gameObject.name} drop zone state reset.");
+    }
 
 
 
@@ -288,21 +341,38 @@ if (itemChanger != null)
     }
 
 
-void OnTriggerEnter2D(Collider2D collision)
-{
-    DropZone zone = collision.GetComponent<DropZone>();
-    ClothingItem clothingItem = GetComponent<ClothingItem>();
-
-    if (zone != null && clothingItem != null)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (zone.AcceptsType(clothingItem.clothingType))
+        DropZone zone = collision.GetComponent<DropZone>();
+        ClothingItem clothingItem = GetComponent<ClothingItem>();
+
+        if (zone != null && clothingItem != null)
         {
-            isOverDropZone = true;
-            dropZone = collision.transform;
-            Debug.Log($"✅ {gameObject.name} entered {dropZone.name} (Valid Placement).");
+            if (zone.AcceptsType(clothingItem.clothingType))
+            {
+                isOverDropZone = true;
+                dropZone = collision.transform;
+                Debug.Log($"✅ {gameObject.name} entered {dropZone.name} (Valid Placement).");
+            }
         }
     }
-}
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        DropZone zone = collision.GetComponent<DropZone>();
+        ClothingItem clothingItem = GetComponent<ClothingItem>();
+
+        if (zone != null && clothingItem != null)
+        {
+            if (zone.AcceptsType(clothingItem.clothingType))
+            {
+                // ✅ Reset when exiting a valid drop zone
+                isOverDropZone = false;
+                dropZone = null;
+                Debug.Log($"❌ {gameObject.name} exited {zone.name} (Cancelled Placement).");
+            }
+        }
+    }
 
 
     public Vector3 GetStartingPosition()
@@ -321,13 +391,13 @@ void OnTriggerEnter2D(Collider2D collision)
     }
 
     private void SetAllChildSortingOrder(int order)
-{
-    SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
-    foreach (SpriteRenderer sr in renderers)
     {
-        sr.sortingOrder = order;
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sr in renderers)
+        {
+            sr.sortingOrder = order;
+        }
     }
-}
 
 
 

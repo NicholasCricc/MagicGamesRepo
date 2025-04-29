@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;       // for LINQ in the sibling cleanup
 
 public class DropZone : MonoBehaviour
 {
@@ -7,161 +8,160 @@ public class DropZone : MonoBehaviour
     private ItemChanger itemChanger;
     public ClothingType[] acceptedTypes;
 
-
     private void Start()
     {
+        // find your master ItemChanger so we can re‐add/reset items
         itemChanger = Object.FindFirstObjectByType<ItemChanger>();
     }
 
+    /// <summary>
+    /// Called by your DraggableItem when the user drops something here.
+    /// Returns any previously‐placed item so you can cycle it back.
+    /// </summary>
     public GameObject PlaceItem(GameObject newItem)
     {
-        Debug.Log($"📥 {newItem.name} is trying to be placed in {gameObject.name}");
+        GameObject old = currentItem;
 
-        GameObject returnedItem = null;
-
-        if (isOccupied)
+        // 1) Reset the old item if there was one
+        if (old != null)
         {
-            returnedItem = currentItem;
-            SwapItem(newItem);
-        }
-        else
-        {
-            isOccupied = true;
-            currentItem = newItem;
-            Debug.Log($"✅ {newItem.name} is now in {gameObject.name}");
+            ResetItemForCycling(old);
         }
 
-        return returnedItem;
-    }
+        // 2) Snap the new one in
+        currentItem = newItem;
+        isOccupied = true;
+        newItem.transform.position = transform.position;
 
+        var cloth = newItem.GetComponent<ClothingItem>();
+        var drag = newItem.GetComponent<DraggableItem>();
 
-    private void SwapItem(GameObject newItem)
-    {
-        if (currentItem != null)
+        if (cloth != null)
         {
-            Debug.Log($"🔄 Swapping {currentItem.name} with {newItem.name}");
+            cloth.isPlaced = true; // mark as placed so cycling skips it
+        }
 
-            DraggableItem draggable = currentItem.GetComponent<DraggableItem>();
-            if (draggable != null)
+        if (drag != null)
+        {
+            bool cameFromRod = drag.originalParent.GetComponent<ItemChanger>() != null;
+
+            if (!cameFromRod)
             {
-                Vector3 returnPosition = draggable.GetStartingPosition();
-
-                // ✅ Ensure swapped item is fully reset
-                currentItem.SetActive(false);
-                currentItem.transform.position = returnPosition;
-
-                // ✅ Remove drop zone reference to allow clicking
-                DraggableItem swappedDraggable = currentItem.GetComponent<DraggableItem>();
-                if (swappedDraggable != null)
-                {
-                    swappedDraggable.ResetDropZoneState(); // ✅ MUST come before reset
-                    ResetItemForCycling(currentItem);
-                }
-
-
-                ResetItemForCycling(currentItem);
-                Debug.Log($"🔄 {currentItem.name} moved back to {returnPosition} and is now ready for cycling.");
+                // ✅ If the newItem is not from a Rod (accessory items like glasses/headbands), deactivate after placing
+                drag.originalParent.gameObject.SetActive(false);
+                Debug.Log($"🛑 {newItem.name}'s original parent hidden after placement (not from rod)");
             }
         }
 
-        // ✅ Place new item in drop zone
+        return old;
+    }
+
+
+    /// <summary>
+    /// Puts the newItem into this DropZone.
+    /// </summary>
+    private void SnapIntoZone(GameObject newItem)
+    {
+        // move into the exact drop‐zone position
+        newItem.transform.position = transform.position;
+
+        // mark as “placed” so your cycling code skips it
+        var cloth = newItem.GetComponent<ClothingItem>();
+        if (cloth != null) cloth.isPlaced = true;
+
+        Debug.Log($"✅ {newItem.name} placed in {name}");
+    }
+
+    /// <summary>
+    /// Swaps out whatever was here previously (sending it back to its own hanger)
+    /// and immediately snaps the newItem into this zone.
+    /// </summary>
+    private void SwapItem(GameObject newItem)
+    {
+        // 1) pull out the old one
+        GameObject old = currentItem;
+        if (old != null)
+        {
+            ResetItemForCycling(old);
+        }
+
+        // 2) snap the new one in
         isOccupied = true;
         currentItem = newItem;
         newItem.transform.position = transform.position;
-        Debug.Log($"✅ {newItem.name} placed in {gameObject.name}");
+
+        var nc = newItem.GetComponent<ClothingItem>();
+        if (nc != null) nc.isPlaced = true;
+
+        Debug.Log($"✅ {newItem.name} placed in {name}");
     }
 
+    /// <summary>
+    /// Resets a just-removed item back onto its original “rod”
+    /// so that it can be cycled again alongside its siblings.
+    /// </summary>
     private void ResetItemForCycling(GameObject item)
     {
-        if (item == null) return;
+        var drag = item.GetComponent<DraggableItem>();
+        var cloth = item.GetComponent<ClothingItem>();
+        if (drag == null || cloth == null || cloth.parentChanger == null) return;
 
-        Debug.Log($"♻️ Resetting {item.name} for cycling.");
+        var changer = cloth.parentChanger;
 
-        // ✅ Reset position & scale
-        DraggableItem draggable = item.GetComponent<DraggableItem>();
-        if (draggable != null)
+        // 1) send it home
+        item.transform.SetParent(drag.originalParent);
+        item.transform.position = drag.GetStartingPosition();
+        item.transform.localScale = drag.GetOriginalScale();
+        drag.ResetDropZoneState();
+
+        // 2) un-mark
+        cloth.isPlaced = false;
+
+        // 3) decide by list membership
+        bool isRodItem = changer.itemList.Contains(item);
+
+        if (isRodItem)
         {
-            item.transform.position = draggable.GetStartingPosition();
-            item.transform.localScale = draggable.GetOriginalScale();
-            draggable.ResetDropZoneState(); // ✅ Ensure future clicks work
+            // — rod items: re-enable & keep cycling
+            item.SetActive(true);
+            if (item.TryGetComponent<Collider2D>(out var col)) col.enabled = true;
+            drag.enabled = true;
+
+            // no need to re-add; it was already there
+            changer.ResetIndex();
+            changer.SetCurrentRodItem(item);
+            changer.DeactivateConflictingClothingTypes(cloth.clothingType);
+            Debug.Log($"♻️ {item.name} reset on rod");
         }
-
-        // ✅ Reactivate and re-enable
-        item.SetActive(true);
-        EnableItemInteraction(item);
-
-        // ✅ Re-register the item with ItemChanger
-        if (itemChanger != null)
+        else
         {
-            ClothingItem clothing = item.GetComponent<ClothingItem>();
-            if (clothing != null)
-            {
-                // Always ensure there's only one of this type in the list
-                itemChanger.itemList.RemoveAll(i =>
-                {
-                    var c = i.GetComponent<ClothingItem>();
-                    return c != null && c.clothingType == clothing.clothingType;
-                });
-
-                itemChanger.itemList.Add(item);
-                Debug.Log("📋 Current itemList after adding:");
-                foreach (GameObject go in itemChanger.itemList)
-                {
-                    var ci = go.GetComponent<ClothingItem>();
-                    if (ci != null)
-                        Debug.Log($"   - {go.name} (Type: {ci.clothingType}) | Active: {go.activeSelf}");
-                }
-
-                Debug.Log($"✅ {item.name} re-added to itemList for category {clothing.clothingType}");
-            }
-
-
-            itemChanger.ResetIndex(); // force update to avoid out-of-sync cycling
-
-            // ✅ Track this as the current rod item and hide previous one if necessary
-            itemChanger.SetCurrentRodItem(item);
-            itemChanger.DeactivateConflictingClothingTypes(clothing.clothingType);
-
+            // — accessories: hide immediately
+            item.SetActive(false);
+            Debug.Log($"🛑 {item.name} returned and hidden (not in rod list)");
         }
-
-        Debug.Log($"✅ {item.name} is now fully reset and ready for interaction.");
     }
+
+
+
+
+
 
     public void EnableItemInteraction(GameObject item)
     {
         if (item == null) return;
-
-        Collider2D collider = item.GetComponent<Collider2D>();
-        if (collider != null)
-        {
-            collider.enabled = true;
-            Debug.Log($"✅ Collider enabled for {item.name}");
-        }
-
-        DraggableItem draggable = item.GetComponent<DraggableItem>();
-        if (draggable != null)
-        {
-            draggable.enabled = true;
-            Debug.Log($"✅ DraggableItem script enabled for {item.name}");
-        }
+        if (item.TryGetComponent<Collider2D>(out var c)) c.enabled = true;
+        if (item.TryGetComponent<DraggableItem>(out var d)) d.enabled = true;
+        Debug.Log($"✅ Interaction re-enabled for {item.name}");
     }
-
-
 
     public bool AcceptsType(ClothingType type)
-{
-    foreach (ClothingType accepted in acceptedTypes)
     {
-        if (accepted == type)
-            return true;
+        return acceptedTypes.Contains(type);
     }
-    return false;
-}
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, 0.5f);
     }
-
 }
