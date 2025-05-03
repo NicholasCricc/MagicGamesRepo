@@ -15,23 +15,20 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
+        // hide everything initially
         foreach (GameObject item in itemList)
-        {
             item.SetActive(false);
-        }
 
+        // give each ClothingItem its back-pointer
         foreach (GameObject item in itemList)
         {
-            ClothingItem clothing = item.GetComponent<ClothingItem>();
+            var clothing = item.GetComponent<ClothingItem>();
             if (clothing != null)
-            {
-                clothing.parentChanger = this; // 🧹 Assign myself as their manager
-            }
+                clothing.parentChanger = this;
         }
 
         ChangeToNextItem();
     }
-
 
     public void ChangeToNextItem()
     {
@@ -41,62 +38,44 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
-        if (itemList.Count == 1)
-        {
-            Debug.Log("ℹ️ Only one item available, activating it.");
-            ActivateItem(0);
-            return;
-        }
+        // if currentIndex is out of range (e.g. because we just removed the old item), reset it
+        if (currentIndex < 0 || currentIndex >= itemList.Count)
+            currentIndex = -1;
 
-        // Deactivate current item
-        if (currentIndex >= 0 && currentIndex < itemList.Count)
+        // deactivate the old current
+        if (currentIndex >= 0)
         {
-            GameObject currentItem = itemList[currentIndex];
-            if (currentItem != null)
+            var old = itemList[currentIndex];
+            if (old != null)
             {
-                currentItem.SetActive(false);
-                if (currentItem.TryGetComponent(out Collider2D col)) col.enabled = false;
-                if (currentItem.TryGetComponent(out DraggableItem drag)) drag.enabled = false;
-                Debug.Log($"🛑 Deactivated {currentItem.name}");
+                old.SetActive(false);
+                if (old.TryGetComponent<Collider2D>(out var c)) c.enabled = false;
+                if (old.TryGetComponent<DraggableItem>(out var d)) d.enabled = false;
+                Debug.Log($"🛑 Deactivated {old.name}");
             }
         }
 
-        // Move to next
+        // advance to the next slot
         currentIndex = (currentIndex + 1) % itemList.Count;
         Debug.Log($"➡️ Cycling to index: {currentIndex}");
 
-        // 🚀 Skip placed items
-        int safetyCounter = 0;
-        while (
-            itemList[currentIndex].GetComponent<ClothingItem>().isPlaced
-            && safetyCounter < itemList.Count
-        )
+        // skip any placed items
+        int safety = 0;
+        while (itemList[currentIndex].GetComponent<ClothingItem>().isPlaced
+               && safety < itemList.Count)
         {
-            Debug.Log($"⏭️ Skipping placed item: {itemList[currentIndex].name}");
+            Debug.Log($"⏭️ Skipping placed: {itemList[currentIndex].name}");
             currentIndex = (currentIndex + 1) % itemList.Count;
-            safetyCounter++;
+            safety++;
         }
-
-        // 🔥 FIRST check if all items are placed
-        if (safetyCounter >= itemList.Count)
+        if (safety >= itemList.Count)
         {
-            Debug.LogWarning("⚠️ No unplaced items available to cycle.");
+            Debug.LogWarning("⚠️ All items placed, nothing to show.");
             return;
         }
 
-        // ✅ NOW it's safe to get the next active item
-        ClothingItem candidateClothing = itemList[currentIndex].GetComponent<ClothingItem>();
-        if (candidateClothing == null)
-        {
-            Debug.LogError($"❌ No ClothingItem found on {itemList[currentIndex].name}.");
-            return;
-        }
-        ClothingType activeType = candidateClothing.clothingType;
-        Debug.Log($"🔵 ActiveType determined: {activeType}");
-
-        // 🔥 Finally, activate it
+        // finally, show the new one
         ActivateItem(currentIndex);
-
     }
 
     private void ActivateItem(int index)
@@ -107,7 +86,7 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
-        GameObject item = itemList[index];
+        var item = itemList[index];
         if (item == null)
         {
             Debug.LogError("❌ Null GameObject at index in ActivateItem().");
@@ -115,65 +94,91 @@ public class ItemChanger : MonoBehaviour
         }
 
         item.SetActive(true);
-        if (item.TryGetComponent(out Collider2D col)) col.enabled = true;
-        if (item.TryGetComponent(out DraggableItem drag)) drag.enabled = true;
-        if (drag != null)
-        {
-            drag.CacheStartPosition();
-        }
+        if (item.TryGetComponent<Collider2D>(out var c)) c.enabled = true;
+        if (item.TryGetComponent<DraggableItem>(out var d)) d.enabled = true;
+        d?.CacheStartPosition();
 
         Debug.Log($"✅ Activated {item.name}");
     }
 
-    // 🛠️ Placeholder method
+    // ───────────────────────────────────────────────────────────
+    // real implementations of the placeholders from :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
+    // ───────────────────────────────────────────────────────────
+
+    /// <summary>Reset the cycle so the next ChangeToNextItem() starts from “before zero.”</summary>
     public void ResetIndex()
     {
-        Debug.Log("🛠️ ResetIndex() placeholder called.");
+        currentIndex = -1;
+        Debug.Log("🔄 currentIndex reset to -1");
     }
 
-    // 🛠️ Placeholder method
+    /// <summary>Jump the cycle pointer so this GameObject becomes “current.”</summary>
     public void SetCurrentRodItem(GameObject item)
     {
-        Debug.Log($"🛠️ SetCurrentRodItem() placeholder called for {item.name}.");
-    }
-
-    // 🛠️ Placeholder method
-    public void DeactivateConflictingClothingTypes(ClothingType type)
-    {
-        Debug.Log($"🛠️ DeactivateConflictingClothingTypes() placeholder called for {type}.");
-    }
-
-    // 🛠️ Placeholder method
-    public bool CompareCurrentRodItem(GameObject item)
-    {
-        Debug.Log($"🛠️ CompareCurrentRodItem() placeholder called for {item.name}.");
-        return false;
-    }
-
-    // 🛠️ Placeholder method
-    public void ClearCurrentRodItem(GameObject item)
-    {
-        Debug.Log($"🛠️ ClearCurrentRodItem() placeholder called for {item.name}.");
-    }
-
-    // 🛠️ Placeholder method
-    public void MarkItemAsPlaced(GameObject item)
-    {
-        if (item == null) return;
-
-        ClothingItem clothing = item.GetComponent<ClothingItem>();
-        if (clothing != null)
+        int idx = itemList.IndexOf(item);
+        if (idx >= 0)
         {
-            clothing.isPlaced = true;
-            Debug.Log($"✅ Marked {item.name} as placed.");
+            currentIndex = idx;
+            Debug.Log($"🎯 currentIndex set to {idx} ({item.name})");
+        }
+        else
+        {
+            Debug.LogWarning($"⚠️ Tried to SetCurrentRodItem() for {item.name}, but it wasn't in the list.");
         }
     }
 
-
-    // 🛠️ Placeholder method
-    public void SetCurrentIndex(int index)
+    /// <summary>Disable any other items in this rod whose type conflicts with the given one.</summary>
+    public void DeactivateConflictingClothingTypes(ClothingType type)
     {
-        Debug.Log($"🛠️ SetCurrentIndex() placeholder called with index {index}.");
+        foreach (var go in itemList)
+        {
+            var cloth = go.GetComponent<ClothingItem>();
+            if (cloth != null && cloth.clothingType != type && !cloth.isPlaced)
+            {
+                go.SetActive(false);
+                if (go.TryGetComponent<Collider2D>(out var c)) c.enabled = false;
+                if (go.TryGetComponent<DraggableItem>(out var d)) d.enabled = false;
+                Debug.Log($"🚫 Deactivated conflicting {go.name} ({cloth.clothingType})");
+            }
+        }
     }
 
+    /// <summary>Return true if this GameObject is the one currently “up” in the cycle.</summary>
+    public bool CompareCurrentRodItem(GameObject item)
+    {
+        if (currentIndex >= 0 && currentIndex < itemList.Count)
+            return itemList[currentIndex] == item;
+        return false;
+    }
+
+    /// <summary>If this was the current rod item, clear it so the next cycle won’t skip.</summary>
+    public void ClearCurrentRodItem(GameObject item)
+    {
+        if (CompareCurrentRodItem(item))
+        {
+            currentIndex = -1;
+            Debug.Log($"🧹 Cleared {item.name} from current rod slot");
+        }
+    }
+
+    /// <summary>Mark an item placed (so ChangeToNextItem skips it).</summary>
+    public void MarkItemAsPlaced(GameObject item)
+    {
+        var c = item.GetComponent<ClothingItem>();
+        if (c != null)
+        {
+            c.isPlaced = true;
+            Debug.Log($"✅ Marked {item.name} as placed");
+        }
+    }
+
+    /// <summary>Directly set the cycle pointer (use sparingly).</summary>
+    public void SetCurrentIndex(int index)
+    {
+        if (index >= 0 && index < itemList.Count)
+        {
+            currentIndex = index;
+            Debug.Log($"🎯 SetCurrentIndex() to {index}");
+        }
+    }
 }

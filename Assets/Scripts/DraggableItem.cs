@@ -127,156 +127,141 @@ public class DraggableItem : MonoBehaviour
         }
 
 
-        void OnMouseUp()
+    void OnMouseUp()
+    {
+        pressDuration = Time.time - pressStartTime;
+        Debug.Log($"🔴 {name} Released – overDZ: {isOverDropZone}, DZ: {(dropZone != null ? dropZone.name : "None")}");
+
+        swappedItemDuringPlacement = false;
+        var myCloth = GetComponent<ClothingItem>();
+        if (myCloth == null) return;
+
+        // cache for cleanup loops
+        Transform rodParent = transform.parent;
+        bool placed = false;
+
+        if (hasDragged)
         {
-            pressDuration = Time.time - pressStartTime;
-            Debug.Log($"🔴 {gameObject.name} Released - isOverDropZone: {isOverDropZone}, DropZone: {(dropZone != null ? dropZone.name : "None")}");
-
-            swappedItemDuringPlacement = false;
-            var myClothing = GetComponent<ClothingItem>();
-            if (myClothing == null) return;
-
-            Transform parent = transform.parent;
-            bool wasPlacedSuccessfully = false;
-
-            if (hasDragged)
+            if (isOverDropZone && dropZone != null)
             {
-                if (isOverDropZone && dropZone != null)
+                // 1) Get the zone script
+                var dz = dropZone.GetComponent<DropZone>();
+                if (dz == null)
                 {
-                    // 1) Place and get any old item
-                    var dz = dropZone.GetComponent<DropZone>();
-                    GameObject old = dz.PlaceItem(this.gameObject);
-                    wasPlacedSuccessfully = true;
+                    Debug.LogError($"❌ No DropZone on {dropZone.name}");
+                    ReturnHome();
+                    return;
+                }
 
-                    // 2) Hide returned accessory
-                    if (old != null)
+                // 2) Place this item (this also clears shirts if dungaree)
+                GameObject returned = dz.PlaceItem(gameObject);
+                placed = true;
+
+                // 3) Hide any returned accessory
+                if (returned != null)
+                {
+                    var retCloth = returned.GetComponent<ClothingItem>();
+                    if (retCloth != null && retCloth.parentChanger == null)
                     {
-                        var oc = old.GetComponent<ClothingItem>();
-                        if (oc != null && oc.parentChanger == null)
-                        {
-                            old.SetActive(false);
-                            Debug.Log($"🛑 {old.name} swapped out and hidden");
-                        }
-                    }
-
-                    // 3) Snap this one in
-                    transform.position = Vector3.zero;
-                    transform.localScale = Vector3.one;
-                    Debug.Log($"✅ {gameObject.name} placed in {dropZone.name}");
-                    StartCoroutine(DisableColliderAfterDelay());
-
-                    // 4) Mark & remove this from rod if needed
-                    if (itemChanger != null)
-                    {
-                        if (itemChanger.CompareCurrentRodItem(this.gameObject))
-                        {
-                            itemChanger.ClearCurrentRodItem(this.gameObject);
-                            Debug.Log($"🧼 {gameObject.name} untracked from rod");
-                        }
-
-                        itemChanger.MarkItemAsPlaced(this.gameObject);
-                        if (itemChanger.itemList.Contains(this.gameObject))
-                        {
-                            itemChanger.itemList.Remove(this.gameObject);
-                            Debug.Log($"🗑 {gameObject.name} removed from rod list");
-                        }
-                    }
-
-                    // 5) Build a quick lookup for "what is still in the rod"
-                    HashSet<GameObject> rodSet = null;
-                    if (itemChanger != null)
-                        rodSet = new HashSet<GameObject>(itemChanger.itemList);
-
-                    // 6) CLEANUP: disable any **rod** siblings that remain and aren't placed
-                    if (wasPlacedSuccessfully && parent != null && rodSet != null)
-                    {
-                        foreach (Transform sib in parent)
-                        {
-                            var c = sib.GetComponent<ClothingItem>();
-                            if (c != null
-                                && rodSet.Contains(sib.gameObject)
-                                && sib.gameObject.activeSelf
-                                && !c.isPlaced)
-                            {
-                                sib.gameObject.SetActive(false);
-                                if (sib.TryGetComponent<Collider2D>(out var col)) col.enabled = false;
-                                if (sib.TryGetComponent<DraggableItem>(out var d)) d.enabled = false;
-                                if (sib.TryGetComponent<SpriteRenderer>(out var sr)) sr.sortingOrder = 2;
-                                Debug.Log($"🧹 [Rod Cleanup] Disabled {sib.name}");
-                            }
-                        }
-
-                        // 7) ACTIVATE exactly one next rod item
-                        foreach (Transform sib in parent)
-                        {
-                            var c = sib.GetComponent<ClothingItem>();
-                            if (c != null
-                                && rodSet.Contains(sib.gameObject)
-                                && !sib.gameObject.activeSelf
-                                && !c.isPlaced)
-                            {
-                                sib.gameObject.SetActive(true);
-                                if (sib.TryGetComponent<Collider2D>(out var col)) col.enabled = true;
-                                if (sib.TryGetComponent<DraggableItem>(out var d)) d.enabled = true;
-                                if (sib.TryGetComponent<SpriteRenderer>(out var sr)) sr.sortingOrder = 3;
-                                Debug.Log($"✅ [Next Rod] Activated {sib.name}");
-
-                                // re-add to list (if missing) and set index
-                                if (!itemChanger.itemList.Contains(sib.gameObject))
-                                {
-                                    itemChanger.itemList.Add(sib.gameObject);
-                                    Debug.Log($"📋 Added {sib.name} to rod list");
-                                }
-                                int newIndex = itemChanger.itemList.IndexOf(sib.gameObject);
-                                if (newIndex >= 0)
-                                {
-                                    itemChanger.SetCurrentIndex(newIndex);
-                                    Debug.Log($"🎯 CurrentIndex = {newIndex} for {sib.name}");
-                                }
-                                break;
-                            }
-                        }
+                        returned.SetActive(false);
+                        Debug.Log($"🛑 {returned.name} hidden (accessory).");
                     }
                 }
-                else
-                {
-                    // dropped outside → return to start
-                    Debug.Log($"❌ {gameObject.name} dropped outside, returning");
-                    transform.position = startPosition;
-                    transform.localScale = originalScale;
-                    EnableInteraction();
-                }
-            }
-            else if (pressDuration < shortPressThreshold)
-            {
-                // click → cycle
+
+                // 4) Snap our visuals
+                transform.position = Vector3.zero;
+                transform.localScale = Vector3.one;
+                Debug.Log($"✅ {name} placed in {dz.name}");
+                StartCoroutine(DisableColliderAfterDelay());
+
+                // 5) If we came from a rod, remove & mark
                 if (itemChanger != null)
                 {
-                    Debug.Log($"🔁 {gameObject.name} clicked - cycle");
-                    isOverDropZone = false;
-                    dropZone = null;
-
-                    if (itemChanger.CompareCurrentRodItem(this.gameObject))
+                    itemChanger.MarkItemAsPlaced(gameObject);
+                    if (itemChanger.itemList.Contains(gameObject))
                     {
-                        itemChanger.ClearCurrentRodItem(this.gameObject);
-                        itemChanger.MarkItemAsPlaced(this.gameObject);
-                        if (itemChanger.itemList.Contains(this.gameObject))
-                        {
-                            itemChanger.itemList.Remove(this.gameObject);
-                            Debug.Log($"🗑 {gameObject.name} removed after click");
-                        }
-                        gameObject.SetActive(false);
-                        Debug.Log($"🧹 {gameObject.name} deactivated post-click");
+                        itemChanger.itemList.Remove(gameObject);
+                        itemChanger.ResetIndex();
+                        Debug.Log($"🗑 {name} removed from rod list");
                     }
-                    itemChanger.ChangeToNextItem();
+                }
+
+                // 6) Clean up any siblings on that same rod
+                if (placed && rodParent != null && itemChanger != null)
+                {
+                    var rodSet = new HashSet<GameObject>(itemChanger.itemList);
+                    // disable all other rod items
+                    foreach (Transform sib in rodParent)
+                    {
+                        var c = sib.GetComponent<ClothingItem>();
+                        if (c != null && rodSet.Contains(sib.gameObject) && !c.isPlaced)
+                        {
+                            sib.gameObject.SetActive(false);
+                            DisableComponents(sib.gameObject);
+                            Debug.Log($"🧹 [RodCleanup] Disabled {sib.name}");
+                        }
+                    }
+                    // activate exactly one next
+                    foreach (Transform sib in rodParent)
+                    {
+                        var c = sib.GetComponent<ClothingItem>();
+                        if (c != null && rodSet.Contains(sib.gameObject) && !sib.gameObject.activeSelf && !c.isPlaced)
+                        {
+                            sib.gameObject.SetActive(true);
+                            EnableComponents(sib.gameObject);
+                            itemChanger.itemList.Add(sib.gameObject);
+                            int idx = itemChanger.itemList.IndexOf(sib.gameObject);
+                            itemChanger.SetCurrentIndex(idx);
+                            Debug.Log($"🎯 [NextRod] Activated {sib.name}");
+                            break;
+                        }
+                    }
                 }
             }
-
-            // reset visuals & drag state
-            SetAllChildSortingOrder(2);
-            isDragging = false;
-            hasDragged = false;
+            else
+            {
+                ReturnHome();
+            }
         }
+        else if (pressDuration < shortPressThreshold)
+        {
+            // quick click = just cycle
+            if (itemChanger != null)
+            {
+                Debug.Log($"🔁 {name} clicked → cycle");
+                itemChanger.ChangeToNextItem();
+            }
+        }
+
+        // always reset these
+        SetAllChildSortingOrder(2);
+        isDragging = false;
+        hasDragged = false;
+    }
+
+    // helper to return item home
+    private void ReturnHome()
+    {
+        transform.position = startPosition;
+        transform.localScale = originalScale;
+        EnableInteraction();
+        Debug.Log($"❌ {name} returned to start.");
+    }
+
+    // helpers to toggle a GameObject’s grab/drag components
+    private void DisableComponents(GameObject go)
+    {
+        if (go.TryGetComponent<Collider2D>(out var c)) c.enabled = false;
+        if (go.TryGetComponent<DraggableItem>(out var d)) d.enabled = false;
+        if (go.TryGetComponent<SpriteRenderer>(out var sr)) sr.sortingOrder = 2;
+    }
+    private void EnableComponents(GameObject go)
+    {
+        if (go.TryGetComponent<Collider2D>(out var c)) c.enabled = true;
+        if (go.TryGetComponent<DraggableItem>(out var d)) d.enabled = true;
+        if (go.TryGetComponent<SpriteRenderer>(out var sr)) sr.sortingOrder = 3;
+    }
+
 
 
     private void IgnoreDropZoneCollisions(bool ignore)
@@ -373,6 +358,7 @@ public class DraggableItem : MonoBehaviour
             }
         }
     }
+
 
 
     public Vector3 GetStartingPosition()

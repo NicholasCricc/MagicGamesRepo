@@ -362,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clothingType: 6
+  clothingType: 7
   isPlaced: 0
   parentChanger: {fileID: 0}
 --- !u!114 &97501369
@@ -2315,7 +2315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originalParent: {fileID: 0}
   itemChanger: {fileID: 0}
-  hatsChanger: {fileID: 0}
+  hatsChanger: {fileID: 1499717596}
 --- !u!114 &549637253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2328,7 +2328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clothingType: 3
+  clothingType: 4
   isPlaced: 0
   parentChanger: {fileID: 0}
 --- !u!1 &553803657
@@ -3769,7 +3769,7 @@ Transform:
   m_GameObject: {fileID: 1476821661}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.22, y: 2.91, z: 0}
+  m_LocalPosition: {x: 7.17, y: 2.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4416,6 +4416,18 @@ PrefabInstance:
     - target: {fileID: 4059672296943758281, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6014727211056618311, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
+      propertyPath: acceptedTypes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6014727211056618311, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
+      propertyPath: 'acceptedTypes.Array.data[0]'
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6014727211056618311, guid: 8e9f0cdbd70378d4bb4a28479cfeb003, type: 3}
+      propertyPath: 'acceptedTypes.Array.data[1]'
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5261,7 +5273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9507db9634dbedd4fb7969cd6b4e36fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clothingType: 4
+  clothingType: 5
   isPlaced: 0
   parentChanger: {fileID: 0}
 --- !u!50 &1911130911
@@ -5305,7 +5317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originalParent: {fileID: 0}
   itemChanger: {fileID: 0}
-  hatsChanger: {fileID: 0}
+  hatsChanger: {fileID: 1499717596}
 --- !u!60 &1911130913
 PolygonCollider2D:
   m_ObjectHideFlags: 0

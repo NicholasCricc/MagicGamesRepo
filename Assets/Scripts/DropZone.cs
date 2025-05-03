@@ -20,41 +20,49 @@ public class DropZone : MonoBehaviour
     /// </summary>
     public GameObject PlaceItem(GameObject newItem)
     {
-        GameObject old = currentItem;
+        // 1) If we’re dropping a FullBody, first clear any Shirt zones
+        var newCloth = newItem.GetComponent<ClothingItem>();
+        if (newCloth != null && newCloth.clothingType == ClothingType.FullBody)
+        {
+            var allZones = FindObjectsOfType<DropZone>();
+            foreach (var z in allZones)
+            {
+                if (z != this && z.AcceptsType(ClothingType.Shirt))
+                    z.ClearZone();
+            }
+        }
 
-        // 1) Reset the old item if there was one
+        // 2) Now pull out the old one (if any)
+        GameObject old = currentItem;
         if (old != null)
         {
             ResetItemForCycling(old);
         }
 
-        // 2) Snap the new one in
-        currentItem = newItem;
-        isOccupied = true;
+        // 3) Snap new into place
+        currentItem  = newItem;
+        isOccupied   = true;
         newItem.transform.position = transform.position;
 
-        var cloth = newItem.GetComponent<ClothingItem>();
+        // 4) Mark placed so your ItemChanger skips it
+        if (newCloth != null)
+            newCloth.isPlaced = true;
+
+        // 5) If it didn’t come from a rod, hide its hanger
         var drag = newItem.GetComponent<DraggableItem>();
-
-        if (cloth != null)
-        {
-            cloth.isPlaced = true; // mark as placed so cycling skips it
-        }
-
         if (drag != null)
         {
-            bool cameFromRod = drag.originalParent.GetComponent<ItemChanger>() != null;
-
-            if (!cameFromRod)
+            var rod = drag.originalParent?.GetComponent<ItemChanger>();
+            if (rod == null)
             {
-                // ✅ If the newItem is not from a Rod (accessory items like glasses/headbands), deactivate after placing
                 drag.originalParent.gameObject.SetActive(false);
-                Debug.Log($"🛑 {newItem.name}'s original parent hidden after placement (not from rod)");
+                Debug.Log($"🛑 {newItem.name}'s original parent hidden (accessory).");
             }
         }
 
         return old;
     }
+
 
 
     /// <summary>
@@ -104,42 +112,50 @@ public class DropZone : MonoBehaviour
     {
         var drag = item.GetComponent<DraggableItem>();
         var cloth = item.GetComponent<ClothingItem>();
+        // bail if we can’t figure out what rod it belongs to
         if (drag == null || cloth == null || cloth.parentChanger == null) return;
 
         var changer = cloth.parentChanger;
 
-        // 1) send it home
+        // 1) Send it home: re-parent, reset position/scale, clear drop-zone state
         item.transform.SetParent(drag.originalParent);
         item.transform.position = drag.GetStartingPosition();
         item.transform.localScale = drag.GetOriginalScale();
         drag.ResetDropZoneState();
 
-        // 2) un-mark
+        // 2) Un-mark so cycling will include it
         cloth.isPlaced = false;
 
-        // 3) decide by list membership
-        bool isRodItem = changer.itemList.Contains(item);
+        if (!changer.itemList.Contains(item))
+        {
+            changer.itemList.Add(item);
+            Debug.Log($"📋 {item.name} re-added to {changer.name} list");
+        }
+
+        // 3) Is this truly one of this rod’s items?  (rather than an accessory)
+        bool isRodItem = cloth.parentChanger == changer;
 
         if (isRodItem)
         {
-            // — rod items: re-enable & keep cycling
-            item.SetActive(true);
-            if (item.TryGetComponent<Collider2D>(out var col)) col.enabled = true;
-            drag.enabled = true;
+            // 1) Send back to original rod, BUT deactivate it
+            if (!changer.itemList.Contains(item))
+            {
+                changer.itemList.Add(item);
+                Debug.Log($"📋 {item.name} re-added to {changer.name} list");
+            }
 
-            // no need to re-add; it was already there
-            changer.ResetIndex();
-            changer.SetCurrentRodItem(item);
-            changer.DeactivateConflictingClothingTypes(cloth.clothingType);
-            Debug.Log($"♻️ {item.name} reset on rod");
+            item.SetActive(false); // ✅ Hide immediately
+            cloth.isPlaced = false;
+            Debug.Log($"🛑 {item.name} returned to {changer.name} and hidden");
         }
         else
         {
-            // — accessories: hide immediately
-            item.SetActive(false);
-            Debug.Log($"🛑 {item.name} returned and hidden (not in rod list)");
+            item.SetActive(false); // non-rod accessories
+            Debug.Log($"🛑 {item.name} returned and hidden (not part of {changer.name})");
         }
+
     }
+
 
 
 
@@ -164,4 +180,22 @@ public class DropZone : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, 0.5f);
     }
+
+    /// <summary>
+    /// Clears out whatever was here by resetting it and emptying this zone.
+    /// </summary>
+    public void ClearZone()
+    {
+        if (currentItem != null)
+        {
+            // send it back to its rod
+            ResetItemForCycling(currentItem);
+            Debug.Log($"🗑 Cleared {currentItem.name} from {name}");
+
+            // now empty the slot
+            currentItem = null;
+            isOccupied = false;
+        }
+    }
+
 }
