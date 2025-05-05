@@ -19,7 +19,6 @@ public class ClothingItem : MonoBehaviour
     public ClothingType clothingType;
 
     // mark when placed so rod‐cycler skips it
-    [HideInInspector]
     public bool isPlaced = false;
 
     // back-pointer for DropZone.ResetItemForCycling

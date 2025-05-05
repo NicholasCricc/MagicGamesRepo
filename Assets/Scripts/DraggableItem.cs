@@ -69,62 +69,62 @@ public class DraggableItem : MonoBehaviour
         }
 
     }
-        void OnMouseDown()
+    void OnMouseDown()
+    {
+        pressStartTime = Time.time;
+        mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        hasDragged = false;
+        isDragging = false;
+
+        // ✅ Store offset between mouse and object pivot
+        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        dragOffset = transform.position - new Vector3(mouseWorld.x, mouseWorld.y, transform.position.z);
+
+        // ✅ Raise sorting order for all visible parts (e.g. both shoes)
+        SetAllChildSortingOrder(5);
+
+        Debug.Log($"🟡 {gameObject.name} Clicked - Start Dragging.");
+    }
+
+
+    void OnMouseDrag()
+    {
+        Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        float distance = Vector3.Distance(mouseStartPosition, currentMousePosition);
+
+        if (!hasDragged && (distance > dragDistanceThreshold || Time.time - pressStartTime >= longPressThreshold))
         {
-            pressStartTime = Time.time;
-            mouseStartPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            hasDragged = false;
-            isDragging = false;
+            hasDragged = true;
+            isDragging = true;
+            isOverDropZone = false; // ✅ Ensure it doesn't stay true when dragging out of drop zone
 
-            // ✅ Store offset between mouse and object pivot
-            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            dragOffset = transform.position - new Vector3(mouseWorld.x, mouseWorld.y, transform.position.z);
+            Debug.Log($"🟠 {gameObject.name} is being dragged.");
 
-            // ✅ Raise sorting order for all visible parts (e.g. both shoes)
-            SetAllChildSortingOrder(5);
-
-            Debug.Log($"🟡 {gameObject.name} Clicked - Start Dragging.");
+            // ✅ Temporarily disable collision with the item in the drop zone
+            IgnoreDropZoneCollisions(true);
         }
 
-
-        void OnMouseDrag()
+        if (isDragging)
         {
-            Vector3 currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            float distance = Vector3.Distance(mouseStartPosition, currentMousePosition);
+            currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = new Vector3(
+                currentMousePosition.x + dragOffset.x,
+                currentMousePosition.y + dragOffset.y,
+                startPosition.z
+            );
 
-            if (!hasDragged && (distance > dragDistanceThreshold || Time.time - pressStartTime >= longPressThreshold))
+            // ✅ Bring to front on drag (safe across single/clothing/multisprite items)
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            if (sr == null)
+                sr = GetComponentInChildren<SpriteRenderer>();
+
+            if (sr != null)
             {
-                hasDragged = true;
-                isDragging = true;
-                isOverDropZone = false; // ✅ Ensure it doesn't stay true when dragging out of drop zone
-
-                Debug.Log($"🟠 {gameObject.name} is being dragged.");
-
-                // ✅ Temporarily disable collision with the item in the drop zone
-                IgnoreDropZoneCollisions(true);
+                sr.sortingOrder = 5;
             }
-
-            if (isDragging)
-            {
-                currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                transform.position = new Vector3(
-                    currentMousePosition.x + dragOffset.x,
-                    currentMousePosition.y + dragOffset.y,
-                    startPosition.z
-                );
-
-                // ✅ Bring to front on drag (safe across single/clothing/multisprite items)
-                SpriteRenderer sr = GetComponent<SpriteRenderer>();
-                if (sr == null)
-                    sr = GetComponentInChildren<SpriteRenderer>();
-
-                if (sr != null)
-                {
-                    sr.sortingOrder = 5;
-                }
-            }
-
         }
+
+    }
 
 
     void OnMouseUp()
@@ -172,7 +172,15 @@ public class DraggableItem : MonoBehaviour
                 transform.position = Vector3.zero;
                 transform.localScale = Vector3.one;
                 Debug.Log($"✅ {name} placed in {dz.name}");
+                // make sure it’s active, so DisableColliderAfterDelay() can run
+                if (!gameObject.activeInHierarchy)
+                {
+                    gameObject.SetActive(true);
+                    Debug.Log($"🔄 {name} was inactive after swap—reactivated for cleanup");
+                }
+                // now disable its collider after the small delay as before
                 StartCoroutine(DisableColliderAfterDelay());
+
 
                 // 5) If we came from a rod, remove & mark
                 if (itemChanger != null)
@@ -205,7 +213,7 @@ public class DraggableItem : MonoBehaviour
                     foreach (Transform sib in rodParent)
                     {
                         var c = sib.GetComponent<ClothingItem>();
-                        if (c != null && rodSet.Contains(sib.gameObject) && !sib.gameObject.activeSelf && !c.isPlaced)
+                        if (c != null && rodSet.Contains(sib.gameObject)&& sib.gameObject != returned  && !sib.gameObject.activeSelf && !c.isPlaced)
                         {
                             sib.gameObject.SetActive(true);
                             EnableComponents(sib.gameObject);

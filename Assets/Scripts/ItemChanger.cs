@@ -32,51 +32,61 @@ public class ItemChanger : MonoBehaviour
 
     public void ChangeToNextItem()
     {
+        // 1) Guard: nothing to do if your list is empty
         if (itemList == null || itemList.Count == 0)
         {
             Debug.LogError("❌ ItemChanger: itemList is empty in ChangeToNextItem().");
             return;
         }
 
-        // if currentIndex is out of range (e.g. because we just removed the old item), reset it
+        // 2) If our currentIndex has been invalidated (e.g. you removed an item), reset it
         if (currentIndex < 0 || currentIndex >= itemList.Count)
             currentIndex = -1;
 
-        // deactivate the old current
+        // 3) Deactivate the old “current” item
         if (currentIndex >= 0)
         {
             var old = itemList[currentIndex];
             if (old != null)
             {
                 old.SetActive(false);
-                if (old.TryGetComponent<Collider2D>(out var c)) c.enabled = false;
-                if (old.TryGetComponent<DraggableItem>(out var d)) d.enabled = false;
+
+                if (old.TryGetComponent<Collider2D>(out var c))
+                    c.enabled = false;
+
+                // ← FIXED generic syntax here
+                if (old.TryGetComponent<DraggableItem>(out var d))
+                    d.enabled = false;
+
                 Debug.Log($"🛑 Deactivated {old.name}");
             }
         }
 
-        // advance to the next slot
+
+        // 4) Advance *once*, wrapping around
         currentIndex = (currentIndex + 1) % itemList.Count;
         Debug.Log($"➡️ Cycling to index: {currentIndex}");
 
-        // skip any placed items
+        // 5) Skip *only* placed items, up to N tries
         int safety = 0;
         while (itemList[currentIndex].GetComponent<ClothingItem>().isPlaced
                && safety < itemList.Count)
         {
-            Debug.Log($"⏭️ Skipping placed: {itemList[currentIndex].name}");
             currentIndex = (currentIndex + 1) % itemList.Count;
             safety++;
         }
+
+        // 6) If all were placed, bail out
         if (safety >= itemList.Count)
         {
-            Debug.LogWarning("⚠️ All items placed, nothing to show.");
+            Debug.LogWarning("⚠️ All items placed — nothing to show.");
             return;
         }
 
-        // finally, show the new one
+        // 7) Finally, show the chosen item
         ActivateItem(currentIndex);
     }
+
 
     private void ActivateItem(int index)
     {
@@ -100,10 +110,6 @@ public class ItemChanger : MonoBehaviour
 
         Debug.Log($"✅ Activated {item.name}");
     }
-
-    // ───────────────────────────────────────────────────────────
-    // real implementations of the placeholders from :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
-    // ───────────────────────────────────────────────────────────
 
     /// <summary>Reset the cycle so the next ChangeToNextItem() starts from “before zero.”</summary>
     public void ResetIndex()
@@ -180,5 +186,14 @@ public class ItemChanger : MonoBehaviour
             currentIndex = index;
             Debug.Log($"🎯 SetCurrentIndex() to {index}");
         }
+    }
+
+
+    private void DeactivateItem(GameObject go)
+    {
+        go.SetActive(false);
+        if (go.TryGetComponent(out Collider2D col)) col.enabled = false;
+        if (go.TryGetComponent(out DraggableItem d)) d.enabled = false;
+        Debug.Log($"🛑 Deactivated {go.name}");
     }
 }
