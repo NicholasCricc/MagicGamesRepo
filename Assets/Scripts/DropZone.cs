@@ -36,22 +36,21 @@ public class DropZone : MonoBehaviour
                 }
             }
         }
-        // 2) If dropping Shirt or Pants → clear only the zone that actually holds a FullBody
+        // 2) If dropping Shirt or Pants → clear *only* the zones that
+        //    actually contain a FullBody item (not every zone that accepts FullBody)
         else if (newCloth.clothingType == ClothingType.Shirt
               || newCloth.clothingType == ClothingType.Pants)
         {
             foreach (var z in allZones)
             {
-                if (z == this)
-                    continue;
-
-                // look at the item currently in that zone
-                var occupant = z.currentItem;
-                if (occupant != null)
+                if (z == this) continue;
+                // look at what’s sitting in that zone right now:
+                var placed = z.currentItem;
+                if (placed != null)
                 {
-                    var occCloth = occupant.GetComponent<ClothingItem>();
-                    if (occCloth != null
-                     && occCloth.clothingType == ClothingType.FullBody)
+                    var placedCloth = placed.GetComponent<ClothingItem>();
+                    if (placedCloth != null
+                     && placedCloth.clothingType == ClothingType.FullBody)
                     {
                         z.ClearZone();
                     }
@@ -140,7 +139,7 @@ public class DropZone : MonoBehaviour
         var changer = cloth.parentChanger;
 
         // ── Special-case HeadBand: send it home, show it, then bail out ──
-        if (cloth.clothingType == ClothingType.HeadBand)
+        if (cloth.clothingType == ClothingType.HeadBand || cloth.clothingType == ClothingType.Glasses)
         {
             // a) reparent & restore its world position/scale
             item.transform.SetParent(drag.originalParent, worldPositionStays: true);

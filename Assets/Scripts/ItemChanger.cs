@@ -43,25 +43,18 @@ public class ItemChanger : MonoBehaviour
         if (currentIndex < 0 || currentIndex >= itemList.Count)
             currentIndex = -1;
 
-        // 3) Deactivate the old “current” item
+        // 3) Deactivate the old “current” item—but always deactivate HeadBand & Glasses even if marked placed
         if (currentIndex >= 0)
         {
             var old = itemList[currentIndex];
             if (old != null)
             {
-                old.SetActive(false);
-
-                if (old.TryGetComponent<Collider2D>(out var c))
-                    c.enabled = false;
-
-                // ← FIXED generic syntax here
-                if (old.TryGetComponent<DraggableItem>(out var d))
-                    d.enabled = false;
-
-                Debug.Log($"🛑 Deactivated {old.name}");
+                    old.SetActive(false);
+                    if (old.TryGetComponent<Collider2D>(out var c)) c.enabled = false;
+                    if (old.TryGetComponent<DraggableItem>(out var d)) d.enabled = false;
+                    Debug.Log($"🛑 Deactivated {old.name}");
             }
         }
-
 
         // 4) Advance *once*, wrapping around
         currentIndex = (currentIndex + 1) % itemList.Count;
@@ -96,20 +89,35 @@ public class ItemChanger : MonoBehaviour
             return;
         }
 
-        var item = itemList[index];
-        if (item == null)
+        // 1) Force‐disable all other items on this rod, except any that are placed
+        for (int i = 0; i < itemList.Count; i++)
         {
-            Debug.LogError("❌ Null GameObject at index in ActivateItem().");
-            return;
+            if (i == index) continue;
+            var other = itemList[i];
+            var cloth = other.GetComponent<ClothingItem>();
+            if (cloth != null && cloth.isPlaced)
+                continue; // leave it up on the character
+            other.SetActive(false);
+            if (other.TryGetComponent<Collider2D>(out var oc)) oc.enabled = false;
+            if (other.TryGetComponent<DraggableItem>(out var od)) od.enabled = false;
+            Debug.Log($"🛑 Deactivated {other.name}");
         }
 
-        item.SetActive(true);
-        if (item.TryGetComponent<Collider2D>(out var c)) c.enabled = true;
-        if (item.TryGetComponent<DraggableItem>(out var d)) d.enabled = true;
-        d?.CacheStartPosition();
 
-        Debug.Log($"✅ Activated {item.name}");
+
+        // 2) Now activate the one we actually want
+        var current = itemList[index];
+        current.SetActive(true);
+        if (current.TryGetComponent<Collider2D>(out var c)) c.enabled = true;
+        if (current.TryGetComponent<DraggableItem>(out var d))
+        {
+            d.enabled = true;
+            d.CacheStartPosition();
+        }
+        Debug.Log($"✅ Activated {current.name}");
     }
+
+
 
     /// <summary>Reset the cycle so the next ChangeToNextItem() starts from “before zero.”</summary>
     public void ResetIndex()

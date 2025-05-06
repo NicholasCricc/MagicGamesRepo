@@ -161,38 +161,38 @@ public class DraggableItem : MonoBehaviour
                 if (returned != null)
                 {
                     var retCloth = returned.GetComponent<ClothingItem>();
-                    if (retCloth != null && retCloth.parentChanger == null)
+                    if (retCloth != null && retCloth.parentChanger != null)
                     {
-                        returned.SetActive(false);
-                        Debug.Log($"🛑 {returned.name} hidden (accessory).");
+                        retCloth.parentChanger.ClearCurrentRodItem(returned);
+                        Debug.Log($"🧹 Cleared rod pointer for {returned.name}");
                     }
                 }
 
                 // 4) Snap our visuals
                 transform.position = Vector3.zero;
                 transform.localScale = Vector3.one;
-                Debug.Log($"✅ {name} placed in {dz.name}");
-                // make sure it’s active, so DisableColliderAfterDelay() can run
-                if (!gameObject.activeInHierarchy)
-                {
-                    gameObject.SetActive(true);
-                    Debug.Log($"🔄 {name} was inactive after swap—reactivated for cleanup");
-                }
-                // now disable its collider after the small delay as before
-                StartCoroutine(DisableColliderAfterDelay());
+Debug.Log($"✅ {name} placed in {dz.name}");
+// make sure it’s active, so DisableColliderAfterDelay() can run
+if (!gameObject.activeInHierarchy)
+{
+    gameObject.SetActive(true);
+    Debug.Log($"🔄 {name} was inactive after swap—reactivated for cleanup");
+}
+// now disable its collider after the small delay as before
+StartCoroutine(DisableColliderAfterDelay());
 
 
-                // 5) If we came from a rod, remove & mark
-                if (itemChanger != null)
-                {
-                    itemChanger.MarkItemAsPlaced(gameObject);
-                    if (itemChanger.itemList.Contains(gameObject))
-                    {
-                        itemChanger.itemList.Remove(gameObject);
-                        itemChanger.ResetIndex();
-                        Debug.Log($"🗑 {name} removed from rod list");
-                    }
-                }
+                //// 5) If we came from a rod, remove & mark
+                //if (itemChanger != null)
+                //{
+                //    itemChanger.MarkItemAsPlaced(gameObject);
+                //    if (itemChanger.itemList.Contains(gameObject))
+                //    {
+                //        itemChanger.itemList.Remove(gameObject);
+                //        itemChanger.ResetIndex();
+                //        Debug.Log($"🗑 {name} removed from rod list");
+                //    }
+                //}
 
                 // 6) Clean up any siblings on that same rod
                 if (placed && rodParent != null && itemChanger != null)
